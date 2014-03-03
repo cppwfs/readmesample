@@ -163,11 +163,17 @@ Make sure that the following environment variables are set either the xd-config.
 ./gradlew -Drun_integration_tests=true -Dxd_container_log_dir=<your dir>/singlenode.log :spring-xd-integration-test:build
 ```
 
-** Running on EC2
-	 Running build from Command Line 
-   		- Gradle ./gradlew  -Dxd_admin_host=http://ec2-54-197-41-192.compute-1.amazonaws.com:9393 -Dxd_containers=http://ec2-54-196-248-248.compute-1.amazonaws.com:9393 -Dxd_http_port=15000 -Dxd_jmx_port=15005 -Dxd_private_key_file=<your dir>/xd-key-pair.pem -Dxd_run_on_ec2=true -Drun_integration_tests=true :spring-xd-integration-test:build			
-** Eclipse localhost
-      In the run configuration of your tests add the environment variables to your VMArgs.  Use the environment variables below:
+### Running on EC2
+#### Running build from Command Line 
+
+```
+./gradlew  -Dxd_admin_host=http://ec2-54-197-41-192.compute-1.amazonaws.com:9393
+-Dxd_containers=http://ec2-54-196-248-248.compute-1.amazonaws.com:9393 -Dxd_http_port=15000 -Dxd_jmx_port=15005 -Dxd_private_key_file=<your dir>/xd-key-pair.pem -Dxd_run_on_ec2=true -Drun_integration_tests=true :spring-xd-integration-test:build			
+```
+
+### Eclipse localhost
+In the run configuration of your tests add the environment variables to your VMArgs.  Use the environment variables below:
+```
         -Dxd_admin_host=http://localhost:9393 
         -Dxd_containers=http://localhost:9393 
         -Dxd_http_port=9000 
@@ -175,17 +181,21 @@ Make sure that the following environment variables are set either the xd-config.
         -Dxd_private_key_file=<location of your ec2 private key file> // if you are testing ec2 cluster
         -Dxd_run_on_ec2=[false if you are testing locally | true if you are testing on ec2]
         -Dxd_container_log_dir=<the location of container/singlenode log>
+```
+* Execute the tests via the "Run As"->"JUnit Tests" infrastructure.
+* Using the artifact
+  * Setup the environment by using the ec2servers.csv file
+    * Create an artifact file named ec2servers.csv and place it in the root spring-xd-integration-test directory.  The file looks like the following:
 
-   	  * Execute the tests via the "Run As"->"JUnit Tests" infrastructure.
-** Using the artifact
-   	  * Setup the environment by using the ec2servers.csv file
-        > Create an artifact file named ec2servers.csv and place it in the root spring-xd-integration-test directory.
-	      The file looks like the following:
+```
 			adminNode,localhost,9393,15000,15005
 			containerNode,localhost,9393,15000,15005 
-	  * You will still need to use set the environment variables xd_private_key_file & xd_run_on_ec2.  
+```
 
-# Environment variables
+**Note:**
+*You will still need to use set the environment variables xd_private_key_file & xd_run_on_ec2.*
+
+### Environment variables
   * xd_admin_host - the ip and port of the administrator server
   * xd_containers - the ip and port of the container server
   * xd_http_port - the http source port 
