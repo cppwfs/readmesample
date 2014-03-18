@@ -203,3 +203,8 @@ In the run configuration of your tests add the environment variables to your VMA
   * xd_private_key_file - the URI of the ec2 private key 
   * xd_run_on_ec2 - If set to true, system will pull result file and logs from remote servers.
  
+## Module Configuration
+
+Out of the box all modules should require no additional setup for local testing.  However in a distributed environment resources such as databases, Message Queues and Hadoop servers lie in different locations.  This section will discuss how to configure these modules to work in  a distributed environment
+
+### JDBC
