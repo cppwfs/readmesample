@@ -209,7 +209,7 @@ Out of the box all modules should require no additional setup for local testing.
 
 ### JDBC
 
-THe Jdbc sink test has the following parameters:
+The Jdbc sink test has the following parameters:
 ````
 jdbc_username: Default: 'sa'
 jdbc_database: Default: 'xdjob'
@@ -217,3 +217,4 @@ jdbc_password: Default:  ''
 jdbc_driver:   Default: 'org.hsqldb.jdbc.JDBCDriver'
 jdbc_url:      Default: 'jdbc:hsqldb:hsql://localhost:9101/%s'
 ````
+By default the tester does not have to change any of the parameters or start a database to execute a JDBC sink test because it will use the embedded hsql db, when testing against a single node on a local machine.
