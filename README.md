@@ -208,3 +208,12 @@ In the run configuration of your tests add the environment variables to your VMA
 Out of the box all modules should require no additional setup for local testing.  However in a distributed environment resources such as databases, Message Queues and Hadoop servers lie in different locations.  This section will discuss how to configure these modules to work in  a distributed environment
 
 ### JDBC
+
+THe Jdbc sink test has the following parameters:
+````
+jdbc_username: Default: 'sa'
+jdbc_database: Default: 'xdjob'
+jdbc_password: Default:  ''
+jdbc_driver:   Default: 'org.hsqldb.jdbc.JDBCDriver'
+jdbc_url:      Default: 'jdbc:hsqldb:hsql://localhost:9101/%s'
+````
