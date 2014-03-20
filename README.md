@@ -217,4 +217,5 @@ jdbc_password: Default:  ''
 jdbc_driver:   Default: 'org.hsqldb.jdbc.JDBCDriver'
 jdbc_url:      Default: 'jdbc:hsqldb:hsql://localhost:9101/%s'
 ````
-By default the tester does not have to change any of the parameters or start a database to execute a JDBC sink test because it will use the embedded hsql db, when testing against a single node on a local machine.
+By default the JDBC sink test will test against the hsqldb embedded in a singlenode deployment on the local machine.
+When running an acceptance test on a singlenode on another machine or a XD Clustered deployment the parameters above must be utilized.
