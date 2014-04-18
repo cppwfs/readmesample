@@ -242,9 +242,9 @@ You can run acceptance tests from Eclipse.
 2. In the run configuration of your tests select Environment tab. 
 3. Click the new button
 4. In the name field enter, __spring_profiles_active__
-5. In the value field enter, singlenode
+5. In the value field enter the profile you are using .for example: singlenode
 6. Click the ok button.
-7 Execute the tests via the "Run As"->"JUnit Tests" infrastructure.
+7. Execute the tests via the "Run As"->"JUnit Tests" infrastructure.
 
 
 ##### Using the artifact
