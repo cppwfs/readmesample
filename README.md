@@ -147,6 +147,19 @@ Make sure that the following environment variables are set either the servers.ym
 
 ##  Running The Test
 
+### Profiles
+
+The acceptance tests utilizes Spring profiles to to configure the run.  This way if you want to run against a local instances of XD and then run the same test against an XD instance on EC2 all you need to do is change your active profile.
+Out of the box the acceptance tests will be configured using the provided application-singlenode.properties.  To create and use a new profile:
+
+1. Create a new properties file with the following format for the name application-*__profile name__*.properties.  For example application-__mycluster__.properties
+2. Copy the contents of the application-singlenode.properties to you new properties file.
+3. Change the settings to your needs.
+4. Save the changes.
+5. In your environment set the new spring\_profiles\_active
+  1. On Mac and Unix:  export spring\_profiles\_active=mycluster
+6. Now your profile  __mycluster__ is active and when you startup up acceptance tests it will use the application-mycluster.properties to setup you acceptance tests.
+
 ### Running on Local Host SingleNode
 
 There are 2 steps to running a your acceptance tests.  
