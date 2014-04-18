@@ -182,22 +182,11 @@ In this case you can add the -Dtest.single=  along with the test you want ot run
 ```
 ./gradlew -Drun_integration_tests=true -Dtest.single=HttpTest :spring-xd-integration-test:build
 ```
-##### Gradle SingleNode
+### Running on Local Host XD Clustered
 
-There are 2 steps to running a your acceptance tests.  
-##### Set your XD_HOME
-* While in your spring-xd project, use your favorite editor to open spring-xd-integration-test/src/test/resources/application-singlenode.properties
-* set the XD_HOME property to the location where you XD is deployed. Fore Example:
-
+Following the Singlenode instructions above, you will only need to make one additional change.  Since we will be running an Admin and Container combination, the logs for which the Acceptance tests will be monitoring will be the containers.  So, the xd\_container\_log\_dir will have to be updated as shown below:
 ```
-#Location
-XD_HOME=/Users/renfrg/projects/spring-xd/build/dist/spring-xd
-
-```
-Now lets run the HttpTest
-
-```
-./gradlew -Drun_integration_tests=true  -Dtest.single=HttpTest :spring-xd-integration-test:build
+xd_container_log_dir=${XD_HOME}/xd/logs/container.log
 ```
 
 ### Running on EC2
