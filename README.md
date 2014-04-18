@@ -184,7 +184,7 @@ In this case you can add the -Dtest.single=  along with the test you want ot run
 ```
 ### Running on Local Host XD Clustered
 
-Following the Singlenode instructions above, you will only need to make one additional change (Assuming you are running the hsqldb-server).  Since we will be running an Admin and Container combination, the logs for which the Acceptance tests will be monitoring will be the containers.  So, the xd\_container\_log\_dir will have to be updated as shown below:
+Following the Singlenode instructions above, you will only need to make one additional change (Assuming you are running the hsqldb-server).  Since we will be running an Admin and Container combination, the logs for which the Acceptance tests will be monitoring will be the container's.  So, the xd\_container\_log\_dir will have to be updated as shown below:
 ```
 xd_container_log_dir=${XD_HOME}/xd/logs/container.log
 ```
