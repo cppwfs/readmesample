@@ -11,7 +11,7 @@ Make sure that the following environment variables are set either the servers.ym
 	export endpoints_jolokia_enabled=true
 	export XD_JMX_ENABLED=true
 	export management_port=15001
-	export server.port=9393
+	export server_port=9393
 	export PORT=9001
 
 	#For the XD Container
@@ -147,20 +147,44 @@ Make sure that the following environment variables are set either the servers.ym
 
 ##  Running The Test
 
-### Running on Local Host
-#### Running build from Command Line
-##### Gradle Single admin and single container on same machine
-* By default the tests are not active.
-* To run the tests execute the following:
+### Running on Local Host SingleNode
+
+There are 2 steps to running a your acceptance tests.  
+1) Set your XD_HOME
+* While in your spring-xd project, use your favorite editor to open spring-xd-integration-test/src/test/resources/application-singlenode.properties
+* set the XD_HOME property to the location where you XD is deployed. For Example:
 
 ```
-./gradlew -Drun_integration_tests=true -Dxd_container_log_dir=<your dir>/container.log :spring-xd-integration-test:build
+#Location
+XD_HOME=/Users/renfrg/projects/spring-xd/build/dist/spring-xd
+```
+2) Run All Acceptance tests
+
+```
+./gradlew -Drun_integration_tests=true :spring-xd-integration-test:build
+```
+
+**What if I want to run just a single test?**  
+In this case you can add the -Dtest.single=  along with the test you want ot run.  For Example:
+```
+./gradlew -Drun_integration_tests=true -Dtest.single=HttpTest :spring-xd-integration-test:build
 ```
 ##### Gradle SingleNode
-* By default the tests are not active.  To run the tests execute the following:
+
+There are 2 steps to running a your acceptance tests.  
+##### Set your XD_HOME
+* While in your spring-xd project, use your favorite editor to open spring-xd-integration-test/src/test/resources/application-singlenode.properties
+* set the XD_HOME property to the location where you XD is deployed. Fore Example:
 
 ```
-./gradlew -Drun_integration_tests=true -Dxd_container_log_dir=<your dir>/singlenode.log :spring-xd-integration-test:build
+#Location
+XD_HOME=/Users/renfrg/projects/spring-xd/build/dist/spring-xd
+
+```
+Now lets run the HttpTest
+
+```
+./gradlew -Drun_integration_tests=true  -Dtest.single=HttpTest :spring-xd-integration-test:build
 ```
 
 ### Running on EC2
