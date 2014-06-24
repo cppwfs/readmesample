@@ -163,7 +163,7 @@ Following the Singlenode instructions above, you will only need to make 3 additi
 ```
 xd_container_log_dir=${XD_HOME}/logs/container.log
 ```
-2) Update the xd_jmx_port to 9395 in the application-<b>yourprofile</b>.properties, for example:
+2) Update the xd_jmx_port to 9395 in the application-singlenode.properties, for example:
 ```
 xd_jmx_port=9395
 ```
