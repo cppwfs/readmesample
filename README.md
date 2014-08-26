@@ -1,265 +1,102 @@
-The purpose of this project is run a comprehensive set of system integration tests for several configurations of the XD runtime.
-The goal is to have all source, sink, processors and jobs that are provided as part of the XD distribution to be tested across
-all supported transports and analytic peristence options.  
+spring-xd-ec2
+=============
+This project simply allows you to deploy an XD cluster to ec2.  
+
+Compiling
+----------
+* Once you have pulled the project from github go to the project root directory.
+* To create an zip distribution execute the following: ./gradlew distZip
+	* Once the compile is complete the distribution zip will be located in:
+	 ${spring-xd-ec2}/build/distributions/spring-xd-ec2-1.0.zip
+
+Installing
+----------
+1) Unzip spring-xd-ec2-1.0.zip
+
+2) cd to the spring-ec2-1.0 directory
+
+3) edit the config/xd-ec2.properties
+
+	* set aws-access-key property to your AWS Access Key
+	* set aws-secret-key property to your AWS Secret Key
+	* set private-key-file to the location of your RSA private key and matching public-key-name
+	* set the cluster-name property to the name you want to show up in the EC2 Instance console
+	* set the user-name property to your name
+	* set the description property, to define the purpose of this cluster.
+	* set the xd-dist-url to be a specific .zip located in the one of the Spring repositories
+	  * http://repo.spring.io/simple/libs-snapshot-local/org/springframework/xd/spring-xd/1.0.0.BUILD-SNAPSHOT/
+	  * http://repo.spring.io/simple/libs-milestone-local/org/springframework/xd/spring-xd
+	* To run multiple nodes, set multi-node=true and set the number-nodes key to the number of nodes you want to run.
+        * Optionally set machine-size,region
+	* Save 
+
+Running
+----------
+1) From the spring-xd-ec2 directory run the install: ./bin/spring-xd-ec2
+	* When the install is complete it will list the DNS name to your newly created instance. e.g.
+
+	Admin Node Instance: ec2-54-205-186-126.compute-1.amazonaws.com has been created
+	Container Node Instance: ec2-54-197-79-170.compute-1.amazonaws.com has been created
 
 
-The tests are run in the [CI server with XD deployed onto EC2](https://build.spring.io/browse/XD-ATEC2) to act as a general regression test against nightly builds of XD off master.  You can also run the tests against a locally deployed XD, either singlenode or distributed.
-
-## Prerequisites
-
-To successfully run all the tests in a local deployment, you will need to install several other components
-
-* ActiveMQ
-* Hadoop 2.2
-* RabbitMQ with MQTT Management Plugin Enabled.
-* Twitter development account for authorization keys
-
-## Setting up single XD node
-If you run these tests against an xd-singlenode instance, it will use all the default values found in [application.yml](https://github.com/spring-projects/spring-xd/blob/master/spring-xd-dirt/src/main/resources/application.yml).  The tests for singlenode will read values from the file [application-singlenode.properites](https://github.com/spring-projects/spring-xd/blob/master/spring-xd-integration-test/src/test/resources/application-singlenode.properties).  If you change any values, such as port numbers, in application-singlenode.properites you will need to update values in servers.yml or environment variables to the port numbers match.
-
-If you want to change default values for ports, here are examples of how to do that.
-
-**If you use Environment Variables**
-```
-	#XD Server
-	export management_port=15005
-	export server_port=9393
-```
-**If you use servers.yml**
-```
-	management:
-	  port: 15005
-
-	---
-
-	server:
-	  port: 9393
-```
-
-
-## Setting up single admin and single container cluster on the same machine
-Make sure that the following environment variables are set either the servers.yml or directly in the environment.
-##### If you use Environment Variables use the settings below:
-```
-# For the XD Admin Server
-	export management_port=15001
-	export server_port=9393
-	export PORT=9001
-```
+properties
+----------
+XD allows a user to change it's behavior by updating environment variables.  Since XD-EC2 allows users to deploy a multi node xd instance it will allow you to set these environment variables on all the nodes.  This is done by adding the XD Environment variables you want updated to the xd-ec2.properties.  
+For example if you  wanted to update the rabbit and amq locations you would add these to the bottom of your xd-ec2.properties file.
 
 ```
-# For the XD Container
-	export management_port=15005
-	export server_port=9395
-```
-##### If you use servers.yml:
-```
-# For the XD Admin Server
+mqtt.url=tcp://ec2-54-205-58-170.compute-1.amazonaws.com:1883
+mqtt.default.client.id=xd.mqtt.client.id
+mqtt.username=guest
+mqtt.password=guest
+mqtt.default.topic=xd.mqtt.test
 
-	management:
-	  port: 15001
-
-	---
-
-	server:
-	  port: 9393
+brokerURL=tcp://ec2-54-205-58-170.compute-1.amazonaws.com:61616
 ```
 
+Setting Up Job Repository
+----------
+Unlike singlenode deloyments, clusters (1 admin with 1+ containers) require that a job RDBMS datasource be specified for the admin server.
+Through XD-EC2 this can be done by setting up the datasource properties in you xd-ec2.properties file.
+For example:
 ```
-# For the XD Container Server
-
-	management:
-	  port: 15005
-
-	---
-
-	server:
-	  port: 9395
-```
-
-**NOTE:**
-*You must set the "PORT=9001" environment variable for the admin server.  At this time XD does not recognize the PORT setting in servers.yml*
-
-
-
-## Setting up single admin and single container cluster on different machines
-Make sure that the following environment variables are set either the servers.yml or directly in the environment.
-
-**If you use Environment Variables use the settings below:**
-```
-# For the XD Admin Server & ContainerServer
-	export endpoints_jmx_enabled=true
-	export endpoints_jmx_uniqueNames=true
-	export endpoints_jolokia_enabled=true
-	export XD_JMX_ENABLED=true
-	export management_port=15000
-	export server_port=9393
-```
-**If you use servers.yml:**
-```
-	# For the XD  Server
-	jmx:
-	  enabled: true
-	  uniqueNames: true
-	jolokia:
-	  enabled: true
-
-	---
-
-	XD_JMX_ENABLED: true
-
-	---
-
-	management:
-	  port: 15000
-
-	---
-
-	server:
-	  port: 9393
+#Database settings
+spring.datasource.url=jdbc:mysql://xdjobasd.adsfadsa.us-east-1.rds.amazonaws.com:3306/xdjob
+spring.datasource.username=myxdjob
+spring.datasource.password=mypassword
+spring.datasource.driverClassName=com.mysql.jdbc.Driver
 ```
 
-##  Running The Test
-
-### Profiles
-
-The acceptance tests utilizes Spring profiles to to configure the run.  This way if you want to run against a local instances of XD and then run the same test against an XD instance on EC2 all you need to do is change your active profile.
-Out of the box the acceptance tests will be configured using the provided application-singlenode.properties.  To create and use a new profile:
-
-1. Create a new properties file with the following format for the name application-*__profile name__*.properties.  For example application-__mycluster__.properties
-2. Copy the contents of the application-singlenode.properties to you new properties file.
-3. Change the settings to your needs.
-4. Save the changes.
-5. In your environment set the new spring\_profiles\_active
-  1. On Mac and Unix:  export spring\_profiles\_active=mycluster
-6. Now your profile  __mycluster__ is active and when you startup up acceptance tests it will use the application-mycluster.properties to setup you acceptance tests.
-
-### Running on Local Host SingleNode
-
-There are 2 steps to running a your acceptance tests.  
-1) Set your XD_HOME
-* While in your spring-xd project, use your favorite editor to open spring-xd-integration-test/src/test/resources/application-singlenode.properties
-* set the XD_HOME property to the location where you deployed XD. For Example:
-
+Using static resources (zookeeper, rabbit or redis)
+----------
+The default behavior of spring-xd-ec2 is to start zookeeper, redis and rabbit on the admin node and have all the containers references these instances.  In cases where the containers and admin need to reference existing resources, the existing resources can be enumerated in the xd-ec2.properties file.  
+For example:
 ```
-#Location
-XD_HOME=/Users/renfrg/projects/spring-xd/build/dist/spring-xd/xd
+#XD Properties
+spring.redis.address=ec2-1-2-3-4.compute-1.amazonaws.com:6379
+spring.rabbitmq.addresses=ec2-6-7-8-9.compute-1.amazonaws.com:5672
+spring.zookeeper.addresses=ec2-10-11-12-13.compute-1.amazonaws.com:2181,ec2-14-15-16-17.compute-1.amazonaws.com:2181,ec2-18-19-20-21.compute-1.amazonaws.com:2181
 ```
-2) Run All Acceptance tests
+You may use the properties individually and for the ones  not present then the default behavior enumerated above will be used.
 
+Container Specific Properties
+----------
+XD Supports XD.CONTAINER.GROUPS such that you can assign modules to a specific container group.  To support this feature XD-EC2 allows the user to create container specific property settings.  This is done by prefixing any property value with XD<digit>. .  The digit represents the container you want the property to be associated.  For example:  If you wanted Container 0 to belong to group0 and Container 1 to belong to groupA you would add the following to your XD-EC2.properties file.
 ```
-./gradlew -Drun_integration_tests=true :spring-xd-integration-test:build
+#Container Specific settings
+XD1.XD.CONTAINER.GROUPS=GROUPA
+XD0.XD.CONTAINER.GROUPS=GROUP0
 ```
 
-**What if I want to run just a single test?**  
-In this case you can add the -Dtest.single=  along with the test you want ot run.  For Example:
-```
-./gradlew -Drun_integration_tests=true -Dtest.single=HttpTest :spring-xd-integration-test:build
-```
-### Running on Local Host XD Clustered
+Using
+----------
 
-Following the Singlenode instructions above, you will only need to make 3 additional changes (Assuming you are running the hsqldb-server).  
-1) Since we will be running an Admin and Container combination, the logs for which the Acceptance tests will be monitoring will be the container's.  So, the xd\_container\_log\_dir will have to be updated as shown below:
-```
-xd_container_log_dir=${XD_HOME}/logs/container.log
-```
-2) Update the xd_jmx_port to 9395 in the application-singlenode.properties, for example:
-```
-xd_jmx_port=9395
-```
-3) Before starting the container set the following environment variable XD_MGMT_PORT to 9395, for example:
-```
-XD_MGMT_PORT=9395
-```
+1) SSH into the boxes using the Public DNS names that were listed at the end of the install process, e.g.
 
-### Running on EC2
-Using the application-ec2.properties provided you will need to update the following properties:
-
-1. xd\_admin\_host
-2. xd\_containers
-3. xd\_private\_keyfile 
-4. JDBC Settings 
-  * jdbc_url
-  * jdbc_driver
-  * jdbc_password
-  * jdbc_database
-  * jdbc_username
-
-For Example:
-```
-xd_admin_host=http://ec2-23-22-34-139.compute-1.amazonaws.com:9393
-xd_containers=http://ec2-54-82-119-240.compute-1.amazonaws.com:9393
-...
-
-#Ec2 Settings
-xd_pvt_keyfile=/Users/renfrg/ec2/xd-key-pair.pem
-...
-
-#JDBC Test Setting
-jdbc_url=jdbc:mysql://xdjobrepo.adsfa.us-east-1.rds.amazonaws.com:3306/%s
-jdbc_driver=com.mysql.jdbc.Driver
-jdbc_password=mypassword
-jdbc_database=xdjob
-jdbc_username=myuser
-```
-
-#### Running build from Command Line
-
-1) Set the spring\_profiles\_active environment variable to ec2.  For Example (Mac/Unix):
-
-```
-export spring_profiles_active=ec2
-```
-2) Run the Acceptance Tests.
-
-```
-./gradlew  -Drun_integration_tests=true :spring-xd-integration-test:build
-```
-
-### Eclipse 
-You can run acceptance tests from Eclipse. 
-
-#### Single Node Acceptance Tests:
-
-1. Make sure that you have setup the acceptance-singlenode.properties according to Step 1 in the " Running on Local Host SingleNode" section of this document.  
-2. In the run configuration of your tests select Environment tab. 
-3. Click the new button
-4. In the name field enter, __spring_profiles_active__
-5. In the value field enter the profile you are using.  For example: singlenode
-6. Click the ok button.
-7. Execute the tests via the "Run As"->"JUnit Tests" infrastructure.
+$ ssh -i xd-key-pair.pem ubuntu@ec2-54-205-186-126.compute-1.amazonaws.com
 
 
-##### Using the artifact
-  * Setup the environment by using the ec2servers.csv file
-    * Create an artifact file named ec2servers.csv and place it in the root spring-xd-integration-test directory.  The file looks like the following:
-
-```
-			adminNode,localhost,9393,15000,15005
-			containerNode,localhost,9393,15000,15005
-```
 
 
-## Module Configuration
 
-Some modules require additional setup for resources such as databases, Message Queues and Hadoop servers lie in different locations.  This section will discuss how to configure these modules to work in  a distributed environment
 
-### JDBC
-
-The Jdbc sink test has the following parameters:
-````
-jdbc_username: Default: 'sa'
-jdbc_database: Default: 'xdjob'
-jdbc_password: Default:  ''
-jdbc_driver:   Default: 'org.hsqldb.jdbc.JDBCDriver'
-jdbc_url:      Default: 'jdbc:hsqldb:hsql://localhost:9101/%s'
-````
-By default the JDBC sink test will test against the hsqldb embedded in a singlenode deployment on the local machine.
-When running an acceptance test on a singlenode on another machine or a XD Clustered deployment the parameters above must be utilized.
-The %s in the jdbc_url will be populated by the jdbc_database.
-An example command line would look like this if running on an acceptance test on a remote XD cluster.
-
-### MQTT
-
-1. Verify that your MQTT plugin is installed on your rabbit instance.  If not, install it based on rabbit's instructions.
-2. The JmxTest will look for the Rabbit MQTT instance on the host declared by the xd\_admin\_host declared in the application-<your profile>.properties file that you are using. 
