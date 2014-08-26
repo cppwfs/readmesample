@@ -77,7 +77,7 @@ spring.redis.address=ec2-1-2-3-4.compute-1.amazonaws.com:6379
 spring.rabbitmq.addresses=ec2-6-7-8-9.compute-1.amazonaws.com:5672
 spring.zookeeper.addresses=ec2-10-11-12-13.compute-1.amazonaws.com:2181,ec2-14-15-16-17.compute-1.amazonaws.com:2181,ec2-18-19-20-21.compute-1.amazonaws.com:2181
 ```
-You may use the properties individually and for the ones  not present then the default behavior enumerated above will be used.
+You may use the properties individually and for the ones  not present, then the default behavior enumerated above will be used.
 
 Container Specific Properties
 ----------
