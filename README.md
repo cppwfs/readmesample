@@ -103,3 +103,12 @@ Now lets start up our singlenode with the 9000 port open and this time will set 
             springxd/singlenode
 
 > Notice we are not restarting our shell.  This is because the shell is not making a sustained connection to the singlenode, but rather executing individual restful calls.  This behavior will change one you invoke XD security.
+
+So to create the stream to receive http posts, go to the the shell and from the ***xd:>*** prompt type the following and press ***return***:
+```
+stream create httpsource --definition "http|log" --deploy
+```
+Now lets post a http "hello world" message to XD singlenode.  From the shell ***xd:>*** prompt type the following and press ***return***
+```
+http post --target http://localhost:9000 --data "hello world"
+```
