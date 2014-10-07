@@ -85,3 +85,12 @@ To destroy the stream go back to the shell and from the ***xd:>*** prompt type t
 stream destroy ticktock
 ```
 > It is also possible to stop and restart the stream instead, using the undeploy and deploy commands. 
+
+## Create a http source stream
+In this example, we will create a http source that will listen for http posts on the 9000 port and will write the results to our log.
+### Cleanup
+First lets stop our last example.  Since we are monitoring our log we can hit the *ctrl-c* to stop the log tailing.  Now we want to stop our singlenode instance and it can be done by executing the following:
+```
+docker stop singlenode
+```
+
