@@ -59,7 +59,7 @@ To connect to the singlenode execute the following command from the prompt:
 ```
 server-unknown:> admin config server http://<host>:9393
 ```
-> Replacing "<"host">" with your host running Docker.
+> Replacing //<host">" with your host running Docker.
 
 ## Create a ticktock stream
 In this simple example, the time source simply sends the current time as a message each second, and the log sink outputs it using the logging framework at the WARN logging level.
