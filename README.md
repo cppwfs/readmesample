@@ -62,14 +62,14 @@ server-unknown:> admin config server http://localhost:9393
 > Replacing `localhost` with your host running Docker (if running inside boot2docekr for example, one can use
 `boot2docker ip` to get the IP to connect to).
 
-## Your first stream!
+## Create a ticktock stream
+In this simple example, the time source simply sends the current time as a message each second, and the log sink outputs it using the logging framework at the WARN logging level.
 
 From the shell ***xd:>*** prompt type the following and press ***return***
-
 ```
 stream create --name ticktock --definition "time | log" --deploy
 ```
-In this simple example, the time source simply sends the current time as a message each second, and the log sink outputs it using the logging framework at the WARN logging level. So when you view the logs -f output from the singlenode you should see:
+Now view the logs -f output from the singlenode you should see:
 ```
 20:18:51,104  INFO DeploymentsPathChildrenCache-0 server.ContainerRegistrar - Deploying module 'time' for stream 'ticktock'
 20:18:51,277  INFO DeploymentsPathChildrenCache-0 server.ContainerRegistrar - Deploying module [ModuleDescriptor@6ded4936 moduleName = 'time', moduleLabel = 'time', group = 'ticktock', sourceChannelName = [null], sinkChannelName = [null], sinkChannelName = [null], index = 0, type = source, parameters = map[[empty]], children = list[[empty]]]
@@ -80,4 +80,8 @@ In this simple example, the time source simply sends the current time as a messa
 20:18:54,363  INFO task-scheduler-6 sink.ticktock - 2014-10-07 20:18:54
 20:18:55,364  INFO task-scheduler-6 sink.ticktock - 2014-10-07 20:18:55
 ```
-
+To destroy the stream go back to the shell and from the ***xd:>*** prompt type the following and press ***return***
+```
+stream destroy ticktock
+```
+> It is also possible to stop and restart the stream instead, using the undeploy and deploy commands. 
