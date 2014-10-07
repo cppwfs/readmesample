@@ -64,13 +64,20 @@ server-unknown:> admin config server http://localhost:9393
 
 ## Your first stream!
 
-From the shell ***xd:>*** prompt type the following and press ***<return>***
+From the shell ***xd:>*** prompt type the following and press ***return***
 
 ```
 stream create --name ticktock --definition "time | log" --deploy
 ```
+In this simple example, the time source simply sends the current time as a message each second, and the log sink outputs it using the logging framework at the WARN logging level. So when you view the logs -f output from the singlenode you should see:
+```
+20:18:51,104  INFO DeploymentsPathChildrenCache-0 server.ContainerRegistrar - Deploying module 'time' for stream 'ticktock'
+20:18:51,277  INFO DeploymentsPathChildrenCache-0 server.ContainerRegistrar - Deploying module [ModuleDescriptor@6ded4936 moduleName = 'time', moduleLabel = 'time', group = 'ticktock', sourceChannelName = [null], sinkChannelName = [null], sinkChannelName = [null], index = 0, type = source, parameters = map[[empty]], children = list[[empty]]]
+20:18:52,360  INFO task-scheduler-1 sink.ticktock - 2014-10-07 20:18:52
+20:18:52,384  INFO Deployer server.StreamDeploymentListener - Deployment status for stream 'ticktock': DeploymentStatus{state=deployed}
+20:18:52,387  INFO Deployer server.StreamDeploymentListener - Stream Stream{name='ticktock'} deployment attempt complete
+20:18:53,362  INFO task-scheduler-5 sink.ticktock - 2014-10-07 20:18:53
+20:18:54,363  INFO task-scheduler-6 sink.ticktock - 2014-10-07 20:18:54
+20:18:55,364  INFO task-scheduler-6 sink.ticktock - 2014-10-07 20:18:55
+```
 
-
-
-
-**Note** that http://localhost:9393 is actually the shell default, so if running with a local Docker demon
