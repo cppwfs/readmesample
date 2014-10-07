@@ -88,14 +88,16 @@ stream destroy ticktock
 ## Create a http source stream
 In this example, we will create a http source that will listen for http posts on the 9000 port and will write the results to our log.
 ### Cleanup
-First lets stop our last example.  Since we are monitoring our log we can hit the ***ctrl-c*** to stop the log tailing.  Now we want to stop our singlenode instance and it can be done by executing the following:
+First lets stop our last example.  
+1.  Stop the logs -f. To do this just ***ctrl-c*** to stop the log tailing.  
+2.  Now we want to stop our singlenode instance and it can be done by executing the following:
 ```
 docker stop singlenode
 ```
 ### Create the hello world http stream
 Now lets start up our singlenode with the 9000 port open and this time will set our name for the container to be httpSourceTest:
 
-        docker run --name httpsourcetest \
+        docker run --name httpSourceTest \
             -d \
             -p 9393:9393\
             -p 9000:9000\
