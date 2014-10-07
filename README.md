@@ -13,15 +13,28 @@ To start it, you just need to execute the following command:
             springxd/singlenode
 
 
-Note how we exposed the `9393` port above. The, run this image:
+> Note how we exposed the `9393` port above. This is the http port that will receive http requests from the shell.
+
+Now let's observe singlenode's log by executing the following:
+
+    sudo docker logs -f singlenode
+
+Now from a new terminal lets pull down the xd shell so we can execute commands against the XD singlenode.
+
+        docker pull springxd/shell
+
+Now lets start the shell
 
         docker run --name shell \
             -it \
             springxd/shell
 
-and use
+Once you see the following text in the log 
 
-    xd:>admin config server http://localhost:9393
+
+
+
+
 
 Replacing `localhost` with your host running Docker (if running inside boot2docekr for example, one can use
 `boot2docker ip` to get the IP to connect to).
