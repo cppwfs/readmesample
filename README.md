@@ -93,7 +93,7 @@ First lets stop our last example.  Since we are monitoring our log we can hit th
 ```
 docker stop singlenode
 ```
-###
+### Create the hello world http stream
 Now lets start up our singlenode with the 9000 port open and this time will set our name for the container to be httpSourceTest:
 
         docker run --name httpsourcetest \
