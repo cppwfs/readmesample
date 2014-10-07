@@ -57,15 +57,18 @@ server-unknown:>
 To connect to the singlenode execute the following command from the prompt:
 
 ```
-server-unknown:> admin config server http://ec2-54-91-89-117.compute-1.amazonaws.com:9393
+server-unknown:> admin config server http://localhost:9393
 ```
 > Replacing `localhost` with your host running Docker (if running inside boot2docekr for example, one can use
 `boot2docker ip` to get the IP to connect to).
 
 ## Your first stream!
 
+From the shell ***xd:>*** prompt type the following and press ***<return>***
 
-
+```
+stream create --name ticktock --definition "time | log" --deploy
+```
 
 
 
