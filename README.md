@@ -57,10 +57,9 @@ server-unknown:>
 To connect to the singlenode execute the following command from the prompt:
 
 ```
-server-unknown:> admin config server http://localhost:9393
+server-unknown:> admin config server http://<host>:9393
 ```
-> Replacing `localhost` with your host running Docker (if running inside boot2docekr for example, one can use
-`boot2docker ip` to get the IP to connect to).
+> Replacing <host> with your host running Docker.
 
 ## Create a ticktock stream
 In this simple example, the time source simply sends the current time as a message each second, and the log sink outputs it using the logging framework at the WARN logging level.
@@ -112,9 +111,10 @@ stream create httpsource --definition "http|log" --deploy
 ```
 Now lets post a http "hello world" message to XD singlenode.  From the shell ***xd:>*** prompt type the following and press ***return***
 ```
-http post --target http://localhost:9000 --data "hello world"
+http post --target http://<host>:9000 --data "hello world"
 ```
 The result you will see in the singlenode log will be:
 ```
 21:06:08,208  INFO pool-11-thread-4 sink.httpsource - hello world
 ```
+
