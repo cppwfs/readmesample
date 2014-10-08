@@ -119,4 +119,5 @@ The result you will see in the httpSourceTest log will be:
 ```
 21:06:08,208  INFO pool-11-thread-4 sink.httpsource - hello world
 ```
+## Create a http source stream that will write its results to a file.
 
