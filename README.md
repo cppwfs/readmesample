@@ -1,6 +1,6 @@
 # Spring XD Singlenode
 
-The single node docker image is the easiest to get started with. It runs everything you need in a single container. The other component we will use is the XD Shell.  The shell is a more user-friendly front end to the REST API which Spring XD exposes to clients. 
+The single node docker image is the easiest to get started with. It runs everything you need in a single container. In this README we will discuss how to deploy the singlenode and how to create a series of basic streams.  To do this we will also use the XD shell.  The shell is a more user-friendly front end to the REST API which Spring XD exposes to clients. 
 
 ## Retrieving the images
 
@@ -29,7 +29,7 @@ Now let's observe singlenode's log by executing the following:
     sudo docker logs -f singlenode
 
 ### Start the shell
-Now lets start the shell:
+Now from a new terminal lets start the shell:
 
         docker run --name shell \
             -it \
@@ -64,7 +64,7 @@ server-unknown:> admin config server http://<host>:9393
 ## Create a ticktock stream
 In this simple example, the time source simply sends the current time as a message each second, and the log sink outputs it using the logging framework at the WARN logging level.
 
-From the shell ***xd:>*** prompt type the following and press ***return***
+From the shell's ***xd:>*** prompt type the following and press ***return***
 ```
 stream create --name ticktock --definition "time | log" --deploy
 ```
@@ -105,7 +105,7 @@ Now lets start up our singlenode with the 9000 port open and this time will set 
 Again now let's monitor our httpSourceTest instance by executing the following:
 
     sudo docker logs -f httpSourceTest
-> Notice we are not restarting our shell.  This is because the shell is not making a sustained connection to the singlenode, but rather executing individual restful calls.  This behavior will change one you invoke XD security.
+> Notice we are not restarting our shell.  This is because the shell is not making a sustained connection to the singlenode, but rather executing individual rest calls.  This behavior will change once you invoke XD security.
 
 So to create the stream to receive http posts, go to the the shell and from the ***xd:>*** prompt type the following and press ***return***:
 ```
