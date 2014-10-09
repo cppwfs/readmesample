@@ -64,7 +64,7 @@ server-unknown:> admin config server http://<host>:9393
 ## Create a ticktock stream
 In this simple example, the time source simply sends the current time as a message each second, and the log sink outputs it using the logging framework at the WARN logging level.
 
-From the shell's ***xd:>*** prompt type the following and press ***return***
+From the shell's ***xd:>*** prompt, type the following and press ***return***
 ```
 stream create --name ticktock --definition "time | log" --deploy
 ```
@@ -79,7 +79,7 @@ Now view the logs -f output from the singlenode you should see:
 20:18:54,363  INFO task-scheduler-6 sink.ticktock - 2014-10-07 20:18:54
 20:18:55,364  INFO task-scheduler-6 sink.ticktock - 2014-10-07 20:18:55
 ```
-To destroy the stream go back to the shell and from the ***xd:>*** prompt type the following and press ***return***
+To destroy the stream go back to the shell and from the ***xd:>*** prompt, type the following and press ***return***
 ```
 stream destroy ticktock
 ```
@@ -107,11 +107,11 @@ Again now let's monitor our httpSourceTest instance by executing the following:
     sudo docker logs -f httpSourceTest
 > Notice we are not restarting our shell.  This is because the shell is not making a sustained connection to the singlenode, but rather executing individual rest calls.  This behavior will change once you invoke XD security.
 
-So to create the stream to receive http posts, go to the the shell and from the ***xd:>*** prompt type the following and press ***return***:
+So to create the stream to receive http posts, go to the the shell and from the ***xd:>*** prompt, type the following and press ***return***:
 ```
 stream create httpsource --definition "http|log" --deploy
 ```
-Now lets post a http "hello world" message to XD httpSourceTest.  From the shell ***xd:>*** prompt type the following and press ***return***
+Now lets post a http "hello world" message to XD httpSourceTest.  From the shell ***xd:>*** prompt, type the following and press ***return***
 ```
 http post --target http://<host>:9000 --data "hello world"
 ```
@@ -139,11 +139,11 @@ Now when we start our singlenode we will mount a local directory to the /tmp/xd/
             -v <dir on your machine>:/tmp/xd/output
             springxd/singlenode
             
-So to create the stream that will receive http posts and write the results to a file, go to the the shell and from the ***xd:>*** prompt type the following and press ***return***:
+So to create the stream that will receive http posts and write the results to a file, go to the the shell and from the ***xd:>*** prompt, type the following and press ***return***:
 ```
 stream create httpfilestream --definition "http|file" --deploy
 ```
-Now lets post a http "hello world" message to XD fileSinkTest and have it write the result to /tmp/xd/output/httpfilestream.out file.  From the shell ***xd:>*** prompt type the following and press ***return***
+Now lets post a http "hello world" message to XD fileSinkTest and have it write the result to /tmp/xd/output/httpfilestream.out file.  From the shell ***xd:>*** prompt, type the following and press ***return***
 
 ```
 http post --target http://<host>:9000 --data "hello world"
