@@ -115,6 +115,8 @@ Now lets post a http "hello world" message to XD httpSourceTest.  From the shell
 ```
 http post --target http://<host>:9000 --data "hello world"
 ```
+> Replacing &lt;host&gt; with your host running Docker.
+
 The result you will see in the httpSourceTest log will be:
 ```
 21:06:08,208  INFO pool-11-thread-4 sink.httpsource - hello world
@@ -138,7 +140,8 @@ Now when we start our singlenode we will mount a local directory to the /tmp/xd/
             -p 9000:9000\
             -v <dir on your machine>:/tmp/xd/output
             springxd/singlenode
-            
+> Replacing &lt;dir on your machine&gt; with your with a directory on your local machine.
+
 So to create the stream that will receive http posts and write the results to a file, go to the the shell and from the ***xd:>*** prompt, type the following and press ***return***:
 ```
 stream create httpfilestream --definition "http|file" --deploy
@@ -148,6 +151,8 @@ Now lets post a http "hello world" message to XD fileSinkTest and have it write 
 ```
 http post --target http://<host>:9000 --data "hello world"
 ```
+> Replacing &lt;host&gt; with your host running Docker.
+
 > Unless a dir is specified for the file sink it will always write its results to the /tmp/xd/output directory.  Also if no file name is specified it will use the stream name as the base for the output file name.   So in this case our stream name was httpfilestream and thus the files name will be httpfilestream.out
 
 From a new terminal you should be able to view the output file and it will be located in your ***&lt;dir on your machine&gt;***/httpfilestream.out 
