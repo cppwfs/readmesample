@@ -120,7 +120,7 @@ The result you will see in the httpSourceTest log will be:
 21:06:08,208  INFO pool-11-thread-4 sink.httpsource - hello world
 ```
 ## Writing data to a file.
-Continuing with theme above where we will receive data via http, we will replace the log sink with a file sink.  By default XD will write all files to the /tmp/xd/output directory.  But in order for us to view the resulting file, we will mount a directory on our machine to the /tmp/xd/output directory in the container.  
+Continuing with theme above where we receive data via http, we will replace the log sink with a file sink.  By default XD will write all files to the /tmp/xd/output directory.  But in order for us to view the resulting file, we will mount a directory on our machine to the /tmp/xd/output directory in the container.  
 
 ### Cleanup
 First lets stop our last example.  
@@ -130,7 +130,7 @@ First lets stop our last example.
 docker stop httpSourceTest
 ```
 ### Create the stream with a http source and file sink
-Now lets start up our singlenode with the 9000 port open and this time will set our name for the container to be httpSourceTest:
+Now when we start our singlenode we will mount a local directory to the /tmp/xd/output directory in the container.
 
         docker run --name fileSinkTest \
             -d \
@@ -150,3 +150,4 @@ Now post "hello world" to our stream.
 ```
 http post --target http://<host>:9000 --data "hello world"
 ```
+From new terminal you should be able to view the output file and it will be located in your ***%lt;dir on your machine%gt;***/httpfilestream.out
