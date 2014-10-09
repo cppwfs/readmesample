@@ -157,3 +157,8 @@ From a new terminal you should be able to view the output file and it will be lo
 
 > Unless a dir is specified for the file sink it will always write its results to the /tmp/xd/output directory.  Also if no file name is specified it will use the stream name as the base for the output file name.   So in this case our stream name was httpfilestream and thus the files name will be httpfilestream.out
 
+# Additional Resources
+To read more about the modules (sources, processors, sinks & jobs) that are available to you from XD please checkout our XD's wiki at https://github.com/spring-projects/spring-xd/wiki.   Also checkout the Docker XD guide available also available at ***TBD***
+
+
+
