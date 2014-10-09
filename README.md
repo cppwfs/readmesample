@@ -150,4 +150,4 @@ http post --target http://<host>:9000 --data "hello world"
 ```
 > Unless a dir is specified for the file sink it will always write its results to the /tmp/xd/output directory.  Also if no file name is specified it will use the stream name as the base for the output file name.   So in this case our stream name was httpfilestream and thus the files name will be httpfilestream.out
 
-From a new terminal you should be able to view the output file and it will be located in your ***<dir on your machine>***/httpfilestream.out 
+From a new terminal you should be able to view the output file and it will be located in your ***&lt;dir on your machine&gt;***/httpfilestream.out 
