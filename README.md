@@ -140,9 +140,13 @@ Now lets start up our singlenode with the 9000 port open and this time will set 
             springxd/singlenode
             
 So to create the stream to receive http posts and writes the results to a file, go to the the shell and from the ***xd:>*** prompt type the following and press ***return***:
+```
 stream create httpfilestream --definition "http|file" --deploy
 ```
-Now lets post a http "hello world" message to XD httpSourceTest.  From the shell ***xd:>*** prompt type the following and press ***return***
+Now lets post a http "hello world" message to XD fileSinkTest and have it write the result to /tmp/xd/output/httpfilestream.out file.  From the shell ***xd:>*** prompt type the following and press ***return***
+> Unless a dir is specified for the file sink it will always write its results to the /tmp/xd/output directory.  Also if no file name is specified it will use the stream name as the base for the output file name.   So in this case our stream name was httpfilestream and thus the files name will be httpfilestream.out
+
+Now post "hello world" to our stream.
 ```
 http post --target http://<host>:9000 --data "hello world"
 ```
