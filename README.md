@@ -119,7 +119,7 @@ The result you will see in the httpSourceTest log will be:
 ```
 21:06:08,208  INFO pool-11-thread-4 sink.httpsource - hello world
 ```
-## Writing data to a file.
+## Writing data to a file
 Continuing with theme above where we receive data via http, we will replace the log sink with a file sink.  By default XD will write all files to the /tmp/xd/output directory.  But in order for us to view the resulting file, we will mount a directory on our machine to the /tmp/xd/output directory in the container.  
 
 ### Cleanup
@@ -139,15 +139,15 @@ Now when we start our singlenode we will mount a local directory to the /tmp/xd/
             -v <dir on your machine>:/tmp/xd/output
             springxd/singlenode
             
-So to create the stream to receive http posts and writes the results to a file, go to the the shell and from the ***xd:>*** prompt type the following and press ***return***:
+So to create the stream that will receive http posts and write the results to a file, go to the the shell and from the ***xd:>*** prompt type the following and press ***return***:
 ```
 stream create httpfilestream --definition "http|file" --deploy
 ```
 Now lets post a http "hello world" message to XD fileSinkTest and have it write the result to /tmp/xd/output/httpfilestream.out file.  From the shell ***xd:>*** prompt type the following and press ***return***
-> Unless a dir is specified for the file sink it will always write its results to the /tmp/xd/output directory.  Also if no file name is specified it will use the stream name as the base for the output file name.   So in this case our stream name was httpfilestream and thus the files name will be httpfilestream.out
 
-Now post "hello world" to our stream.
 ```
 http post --target http://<host>:9000 --data "hello world"
 ```
+> Unless a dir is specified for the file sink it will always write its results to the /tmp/xd/output directory.  Also if no file name is specified it will use the stream name as the base for the output file name.   So in this case our stream name was httpfilestream and thus the files name will be httpfilestream.out
+
 From new terminal you should be able to view the output file and it will be located in your ***<dir on your machine>***/httpfilestream.out 
