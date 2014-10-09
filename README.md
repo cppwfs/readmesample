@@ -150,4 +150,4 @@ Now post "hello world" to our stream.
 ```
 http post --target http://<host>:9000 --data "hello world"
 ```
-From new terminal you should be able to view the output file and it will be located in your ***<dir on your machine>***/httpfilestream.out
+From new terminal you should be able to view the output file and it will be located in your ***<dir on your machine>***/httpfilestream.out 
