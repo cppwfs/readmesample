@@ -119,5 +119,30 @@ The result you will see in the httpSourceTest log will be:
 ```
 21:06:08,208  INFO pool-11-thread-4 sink.httpsource - hello world
 ```
-## Create a http source stream that will write its results to a file.
+## Writing data to a file.
+Continuing with theme above where we will receive data via http, we will replace the log sink with a file sink.  By default XD will write all files to the /tmp/xd/output directory.  But in order for us to view the resulting file, we will mount a directory on our machine to the /tmp/xd/output directory in the container.  
 
+### Cleanup
+First lets stop our last example.  
+1.  Stop the logs -f. To do this just ***ctrl-c*** to stop the log tailing.  
+2.  Now we want to stop our singlenode instance and it can be done by executing the following:
+```
+docker stop httpSourceTest
+```
+### Create the stream with a http source and file sink
+Now lets start up our singlenode with the 9000 port open and this time will set our name for the container to be httpSourceTest:
+
+        docker run --name fileSinkTest \
+            -d \
+            -p 9393:9393\
+            -p 9000:9000\
+            -v <dir on your machine>:/tmp/xd/output
+            springxd/singlenode
+            
+So to create the stream to receive http posts and writes the results to a file, go to the the shell and from the ***xd:>*** prompt type the following and press ***return***:
+stream create httpfilestream --definition "http|file" --deploy
+```
+Now lets post a http "hello world" message to XD httpSourceTest.  From the shell ***xd:>*** prompt type the following and press ***return***
+```
+http post --target http://<host>:9000 --data "hello world"
+```
