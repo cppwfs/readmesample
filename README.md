@@ -20,20 +20,19 @@ The project's [build.gradle][] applies the `spring-xd-module` plugin, providing 
 ## Using the Custom Module
 
 The uber-jar will be in `[project-build-dir]/payload-conversion-1.0.0.BUILD-SNAPSHOT.jar`. To install and register the module to your Spring XD distribution, use the `module upload` Spring XD shell command. Start Spring XD and the shell:
-     _____                           __   _______
-    /  ___|          (-)             \ \ / /  _  \
-    \ `--. _ __  _ __ _ _ __   __ _   \ V /| | | |
-     `--. \ '_ \| '__| | '_ \ / _` |  / ^ \| | | |
-    /\__/ / |_) | |  | | | | | (_| | / / \ \ |/ /
-    \____/| .__/|_|  |_|_| |_|\__, | \/   \/___/
-          | |                  __/ |
-          |_|                 |___/
-    eXtreme Data
-    1.1.0.BUILD-SNAPSHOT | Admin Server Target: http://localhost:9393
-    Welcome to the Spring XD shell. For assistance hit TAB or type "help".
-    xd:>module upload --file [path-to]/payload-conversion-1.0.0.BUILD-SNAPSHOT.jar --name myTupleProcessor --type processor
-    Successfully uploaded module 'processor:myTupleProcessor'
-
+	 _____                           __   _______
+	/  ___|          (-)             \ \ / /  _  \
+	\ `--. _ __  _ __ _ _ __   __ _   \ V /| | | |
+	 `--. \ '_ \| '__| | '_ \ / _` |  / ^ \| | | |
+	/\__/ / |_) | |  | | | | | (_| | / / \ \ |/ /
+	\____/| .__/|_|  |_|_| |_|\__, | \/   \/___/
+	      | |                  __/ |
+	      |_|                 |___/
+	eXtreme Data
+	1.1.0.BUILD-SNAPSHOT | Admin Server Target: http://localhost:9393
+	Welcome to the Spring XD shell. For assistance hit TAB or type "help".
+	xd:>module upload --file [path-to]/payload-conversion-1.0.0.BUILD-SNAPSHOT.jar --name myTupleProcessor --type processor
+	Successfully uploaded module 'processor:myTupleProcessor'
 You can also get information about the available module options:
 
     xd:>module info processor:myTupleProcessor
