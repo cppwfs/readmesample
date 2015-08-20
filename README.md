@@ -54,7 +54,7 @@ SCD-Admin you can follow configuration setup
 guidelines specified in the boot documentation found [here](http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html)
 
 Note: The application.yml containing the the defaults can be found here: 
-[here](https://github.com/spring-cloud/spring-cloud-data/blob/master/spring-cloud-data-admin/src/main/resources/application.yml) )
+[here](https://github.com/spring-cloud/spring-cloud-data/blob/master/spring-cloud-data-admin/src/main/resources/application.yml) 
 
 ### Spring Cloud Configuration
 `spring-cloud-data-admin`  offers the user the ability to configure the 
@@ -63,12 +63,13 @@ admin using
 .  And all configurations retrieved from the cloud config will take precedence over boot's
 defaults enumerated above.  
 The spring-cloud-data-admin will look for the server at `localhost:8888`, however this
- can be overwritten by setting the spring.cloud.config.uri environment variable.
+ can be overwritten by setting the spring.cloud.config.uri environment variable to the 
+ desired url.
 
 #### Cloud-Config-Server configuration
 
-To specify a repository specifically for `SCD-Admin`  setup a repo profile with the 
-pattern `spring-cloud-data-admin`.  For example:
+To specify a repository in the cloud config server configuration.yml for SCD-Admin 
+setup a repo profile with the pattern `spring-cloud-data-admin`.  For example:
 
 ```YAML
 spring:
@@ -80,12 +81,12 @@ spring:
            repos:
             spring-cloud-data-admin:
               pattern: spring-cloud-data-admin
-              uri: https://github.com/cppwfs/configurations
+              uri: https://github.com/myrepo/configurations
               searchPaths: springDataAdmin
 ```
 
 ##### Note: 
-If the `spring-cloud-data-admin` can't connect to the cloud config server the 
+If the SCD-Admin can't connect to the cloud config server the
 following warning message will be logged: 
 `WARN 42924 --- [           main] c.c.c.ConfigServicePropertySourceLocator : Could not locate PropertySource: I/O error on GET request for "http://localhost:8888/spring-cloud-data-admin/default":Connection refused; nested exception is java.net.ConnectException: Connection refused`
 
