@@ -1,93 +1,95 @@
-# Module Launcher
+# Spring Cloud Data Admin
 
-The Module Launcher provides a single entry point that bootstraps module JARs located in a home directory. A single Docker image that contains such a directory of module JARs can then be used to launch any of those JARs based on an environment variable. When running standalone, a system property may be used instead of an environment variable, so that multiple instances of the Module Launcher may run on a single machine. The following examples demonstrate running the modules for the *ticktock* stream (`time | log`).
+The `spring-cloud-data-admin` subproject of `spring-cloud-data` provides the REST API and UI via the executable boot-based `AdminApplication`.
 
-## Prerequisites
+Currently the REST API includes a `StreamController` and `TaskController` that interact with in-memory implementations of the `StreamDefinitionRepository` and `TaskDefinitionRepository`, respectively. The current implementation of the `ModuleRegistry` is a stub that is only aware of the `time` source, the `log` sink, and the `counter` sink. If the `cloud` profile is active, the Receptor-based `ModuleDeployer` will be instantiated and modules will run as LRPs on Lattice. Otherwise, the `LocalModuleDeployer` will be instantiated and the modules will be launched within the same process as the `AdminApplication` itself.
 
-1: clone and build the spring-cloud-stream project:
+## Running the AdminApplication
 
-````
-git clone https://github.com/spring-cloud/spring-cloud-stream.git
-cd spring-cloud-stream
-mvn -s .settings.xml package
-cd ..
-````
+1\. build from the spring-cloud-data root directory:
 
-2: copy the spring-cloud-stream source and sink sample JARs to `/opt/spring/modules`:
+```
+mvn clean package
+```
 
-````
-mkdir -p /opt/spring/modules/org/springframework/cloud/stream/module
-cp spring-cloud-stream/spring-cloud-stream-samples/source/target/spring-cloud-stream-sample-source-1.0.0.BUILD-SNAPSHOT-exec.jar /opt/spring/modules/org/springframework/cloud/stream/module
-cp spring-cloud-stream/spring-cloud-stream-samples/sink/target/spring-cloud-stream-sample-sink-1.0.0.BUILD-SNAPSHOT-exec.jar /opt/spring/modules/org/springframework/cloud/stream/module
-````
+2\. start the app:
 
-3: start redis locally via `redis-server` (optionally start `redis-cli` and use the `MONITOR` command to watch activity)
+```
+java -jar spring-cloud-data-admin/target/spring-cloud-data-admin-1.0.0.BUILD-SNAPSHOT.jar
+```
 
-*NOTE:* redis.conf (on OSX it is found here: /usr/local/etc/redis.conf) may need to be updated to set the binding to an address other than 127.0.0.1 else the docker instances will fail to connect. For example: bind 0.0.0.0
+## Creating the `time | log` stream:
 
-## Running Standalone
+1\. create the 'ticktock' stream:
 
-From the `spring-cloud-stream/spring-cloud-stream-module-launcher` directory:
+```
+$ curl -X POST -d "name=ticktock&definition=time | log" http://localhost:9393/streams/definitions?deploy=false
+```
 
-````
-java -Dmodules=org.springframework.cloud.stream.module:time-source:1.0.0.BUILD-SNAPSHOT -jar target/spring-cloud-stream-module-launcher-1.0.0.BUILD-SNAPSHOT-exec.jar
-java -Dmodules=org.springframework.cloud.stream.module:log-sink:1.0.0.BUILD-SNAPSHOT -jar target/spring-cloud-stream-module-launcher-1.0.0.BUILD-SNAPSHOT-exec.jar
-````
+2\. list all streams available in the repository:
 
-The time messages will be emitted every 5 seconds. The console for the log module will display each:
+```
+$ curl http://localhost:9393/streams/definitions
+```
 
-````
-2015-06-05 12:39:58.896  INFO 51078 --- [hannel-adapter1] config.ModuleDefinition                  : Received: 2015-06-05 12:39:58
-2015-06-05 12:40:02.699  INFO 51078 --- [hannel-adapter1] config.ModuleDefinition                  : Received: 2015-06-05 16:39:52
-2015-06-05 12:40:03.897  INFO 51078 --- [hannel-adapter1] config.ModuleDefinition                  : Received: 2015-06-05 12:40:03
-````
+3\. deploy the 'ticktock' stream:
 
-*NOTE:* the two modules will be launched within a single process if both are specified: `-Dmodules=time,log`
+```
+$ curl -X POST http://localhost:9393/streams/deployments/ticktock
+```
 
-## Running with Docker
+If successful you should see output similar to the following in the `AdminApplication` console:
 
-1: build the module-launcher Docker image, including a copy of the module directory:
+```
+2015-08-05 07:36:19.723  INFO 59555 --- [hannel-adapter1] o.s.cloud.stream.module.log.LogSink      : Received: 2015-08-05 07:36:19
+2015-08-05 07:36:24.678  INFO 59555 --- [hannel-adapter1] o.s.cloud.stream.module.log.LogSink      : Received: 2015-08-05 07:36:24
+2015-08-05 07:36:29.678  INFO 59555 --- [hannel-adapter1] o.s.cloud.stream.module.log.LogSink      : Received: 2015-08-05 07:36:29
+```
 
-From the `spring-cloud-stream/spring-cloud-stream-module-launcher` directory:
+## Configuration:
 
-````
-mkdir artifacts
-cp -r /opt/spring/modules artifacts/
-./dockerize.sh
-````
+### Default
+Out of the box `spring-cloud-data-admin` will start in singlenode mode.  To configure 
+SCD-Admin you can follow configuration setup
+guidelines specified in the boot documentation found [here](http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html)
 
-2: run each module as a docker process by passing environment variables for the module name as well as the host machine's IP address for the redis connection to be established within the container:
+Note: The application.yml containing the the defaults can be found here: 
+[here](https://github.com/spring-cloud/spring-cloud-data/blob/master/spring-cloud-data-admin/src/main/resources/application.yml) )
 
-````
-docker run -p 8080:8080 -e MODULES=org.springframework.cloud.stream.module:time-source:1.0.0.BUILD-SNAPSHOT -e SPRING_REDIS_HOST=<host.ip> 192.168.59.103:5000/module-launcher
-docker run -p 8081:8081 -e MODULES=org.springframework.cloud.stream.module:log-sink:1.0.0.BUILD-SNAPSHOT -e SPRING_REDIS_HOST=<host.ip> 192.168.59.103:5000/module-launcher
-````
+### Spring Cloud Configuration
+`spring-cloud-data-admin`  offers the user the ability to configure the 
+admin using 
+[spring-cloud-config](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html)
+.  And all configurations retrieved from the cloud config will take precedence over boot's
+defaults enumerated above.  
+The spring-cloud-data-admin will look for the server at `localhost:8888`, however this
+ can be overwritten by setting the spring.cloud.config.uri environment variable.
 
-## Running on Lattice
+#### Cloud-Config-Server configuration
 
-### Initial Setup (if necessary)
+To specify a repository specifically for `SCD-Admin`  setup a repo profile with the 
+pattern `spring-cloud-data-admin`.  For example:
 
-1: Launch lattice with vagrant as described [here](http://lattice.cf/docs/getting-started/).
+```YAML
+spring:
+  cloud:
+     config:
+       server:
+         git:
+           uri: https://github.com/myrepo/configurations
+           repos:
+            spring-cloud-data-admin:
+              pattern: spring-cloud-data-admin
+              uri: https://github.com/cppwfs/configurations
+              searchPaths: springDataAdmin
+```
 
-2: Run a private Docker registry, and configure Lattice to use that as described [here](http://lattice.cf/docs/private-docker-registry/).
+##### Note: 
+If the `spring-cloud-data-admin` can't connect to the cloud config server the 
+following warning message will be logged: 
+`WARN 42924 --- [           main] c.c.c.ConfigServicePropertySourceLocator : Could not locate PropertySource: I/O error on GET request for "http://localhost:8888/spring-cloud-data-admin/default":Connection refused; nested exception is java.net.ConnectException: Connection refused`
 
-### Deploying Modules
+To disable the cloud config server set the spring.cloud.config.enabled environment 
+variable to false
 
-1: Push the Docker image to the private registry (if necessary, run `$(boot2docker shellinit)` first):
 
-````
-$ docker push 192.168.59.103:5000/module-launcher
-````
-
-2: Create a Redis instance on Lattice (running as root):
-
-````
-$ ltc create redis redis -r
-````
-
-3: Run the modules as long-running processes (LRPs) on Lattice:
-
-````
-$ ltc create time 192.168.59.103:5000/module-launcher -e MODULES=org.springframework.cloud.stream.module:time-source:1.0.0.BUILD-SNAPSHOT -e SPRING_PROFILES_ACTIVE=cloud
-$ ltc create log 192.168.59.103:5000/module-launcher -e MODULES=org.springframework.cloud.stream.module:log-sink:1.0.0.BUILD-SNAPSHOT -e SPRING_PROFILES_ACTIVE=cloud
-````
