@@ -14,12 +14,14 @@ This module executes a Spring Batch Job Tasklet that logs a timestamp.
 
 == Build:
 
-```
+[source,shell,indent=2]
+---
 $ mvn clean package
-```
+---
 
 == Run:
 
-```
+[source,shell,indent=2]
+---
 $ java -jar target/timestamp-task-1.0.0.BUILD-SNAPSHOT-exec.jar
-```
+---
