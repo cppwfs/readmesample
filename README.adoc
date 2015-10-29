@@ -33,23 +33,23 @@ $FAIL - will set the status for the orchestrated job to fail and terminate the j
 
 ### Split
 
-Splits allow a for multiple jobs within a orchestrated job to be run in parallel.  It is denoted by  using angle brackets to group jobs and flows that are to be run in parallel.  These jobs are and flows are separated by the ampersand ‘&’ character.  For example: 
+Splits allow a for multiple jobs within a orchestrated job to be run in parallel.  It is denoted by  using angle brackets `<>` to group jobs and flows that are to be run in parallel.  These jobs and flows are separated by the ampersand `&` character.  For example: 
 ----
 job create testjob --definition "<aaa & bbb & ccc>"
 ----
-The example above will execute jobs aaa, bbb and ccc in parallel.   With the Job Orchestration DSL a user may also execute multiple split groups in succession.  For example:
+The example above will launch jobs aaa, bbb and ccc in parallel.  With the job orchestration DSL a user may also execute multiple split groups in succession.  For example:
 ----
 job create testjob --definition "<aaa & bbb & ccc> || <ddd & eee & fff>"
 ----
-In the example above jobs aaa, bbb and ccc will be run in parallel, once they all complete then jobs ddd, eee and fff will be run in parallel.  Once they complete the orchestrated job will end.
+In the example above jobs aaa, bbb and ccc will be launched in parallel, once they all complete then jobs ddd, eee and fff will be launched in parallel.  Once they complete the orchestrated job will end.
 
 #### Parenthesis
 
-Supports the ability to execute conditional jobs within a split, for example:
+Supports the ability to launch conditional jobs within a split, for example:
 ----
 job create testjob --definition "<(aaa ||bbb ||ccc) & ddd & eee> || fff" 
 ----
-In this example the jobs aaa, bbb, and ccc will be launched in succession at the same time that  jobs ddd and eee are launched in parallel.  Once all of the jobs are complete within the angle brackets job fff will be launched.  
+In this example the jobs aaa, bbb, and ccc will be launched in succession at the same time that jobs ddd and eee are launched in parallel.  Once all of the jobs are complete within the angle brackets job fff will be launched.  
 
 ## Orchestrated Job Parameters
 
