@@ -16,12 +16,12 @@ The batch_simple job will launch and if successful the batch_basic will be launc
 
 As with any directed graph a specific node can be launched based on the some criteria.  In this case we can launch a specific job or jobs based on the exit status of another job. A job transition is represented by the pipe symbol `|`.  For example: 
 ----
-job create testjob --definition "aaa | foo=bbb |bar=ccc|| ddd"
+job create testjob --definition "aaa | foo=bbb | bar=ccc|| ddd"
 ----
 In the example above aaa would launch and if it had an exit status of foo, then the bbb job would launch. If the exit status of aaa was bar then ccc would launch.  All other statuses returned by aaa would launch ddd. 
 Another transition that can be specified is the `'\*'`.  This means that any Exit Status that is not specifically enumerated by a transition for the current job, the job associated with the '*' will be launched. ie.
 ----
-job create testjob --definition "aaa | foo=bbb |bar=ccc|| ddd | baz=eee | '*'= $END"
+job create testjob --definition "aaa | foo=bbb | bar=ccc|| ddd | baz=eee | '*'= $END"
 ----
 in the example above, if an exit status of ddd is baz then the eee job will launch all other exit status’s would end the job execution.
 
@@ -47,7 +47,7 @@ In the example above jobs aaa, bbb and ccc will be launched in parallel, once th
 
 Supports the ability to launch conditional jobs within a split, for example:
 ----
-job create testjob --definition "<(aaa ||bbb ||ccc) & ddd & eee> || fff" 
+job create testjob --definition "<(aaa || bbb || ccc) & ddd & eee> || fff" 
 ----
 In this example the jobs aaa, bbb, and ccc will be launched in succession at the same time that jobs ddd and eee are launched in parallel.  Once all of the jobs are complete within the angle brackets job fff will be launched.  
 
