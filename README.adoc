@@ -36,8 +36,8 @@ in the example above, if an exit status of ddd is baz then the eee job will laun
 #### Keywords
 
 Orchestrated jobs offers 2 target keywords for transitions where the target of the transition is not another job.  
-$END - will either terminate the job orchestration or if used in a split, will terminate the flow within the specific split.  
-$FAIL - will set the status for the orchestrated job to fail and terminate the job orchestration.
+* $END - will either terminate the job orchestration or if used in a split, will terminate the flow within the specific split.  
+* $FAIL - will set the status for the orchestrated job to fail and terminate the job orchestration.
 
 ### Split
 
