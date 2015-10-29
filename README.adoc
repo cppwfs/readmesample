@@ -1,4 +1,4 @@
-#Introduction
+# Introduction
 Spring XD provides a DSL for orchestrating deployed jobs.  The purpose of this feature is to allow users to create a directed graph, where each node of the graph is a deployed job.
 
-##DSL Components
+## DSL Components
