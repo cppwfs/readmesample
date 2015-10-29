@@ -1,31 +1,4 @@
-AsciiDoc User Guide
-===================
-Stuart Rackham <srackham@gmail.com>
-:Author Initials: SJR
-:toc:
-:icons:
-:numbered:
-:website: http://asciidoc.org/
+#Introduction
+Spring XD provides a DSL for orchestrating deployed jobs.  The purpose of this feature is to allow users to create a directed graph, where each node of the graph is a deployed job.
 
-AsciiDoc is a text document format for writing notes, documentation,
-articles, books, ebooks, slideshows, web pages, blogs and UNIX man
-pages.  AsciiDoc files can be translated to many formats including
-HTML, PDF, EPUB, man page.  AsciiDoc is highly configurable: both the
-AsciiDoc source file syntax and the backend output markups (which can
-be almost any type of SGML/XML markup) can be customized and extended
-by the user.
-
-.This document
-**********************************************************************
-This is an overly large document, it probably needs to be refactored
-into a Tutorial, Quick Reference and Formal Reference.
-
-If you're new to AsciiDoc read this section and the <<X6,Getting
-Started>> section and take a look at the example AsciiDoc (`*.txt`)
-source files in the distribution `doc` directory.
-**********************************************************************
-
-
-Introduction
-------------
-AsciiDoc is a plain text human readable/writable docume
+##DSL Components
