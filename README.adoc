@@ -10,7 +10,7 @@ xd:> job create batch_simple_def --definition "batch_simple_module" --deploy
 xd:> job create batch_basic_def --definition "batch_basic_module" --deploy
 xd:> job create testjob --definition "batch_simple_def || batch_basic_def"
 xd:> job launch testjob
-
+----
 
 ### Conditional Execution
 
