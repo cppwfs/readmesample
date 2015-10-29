@@ -1,4 +1,4 @@
-# Introduction
+# Orchestrated Jobs
 
 Spring XD provides a DSL for orchestrating deployed jobs.  The purpose of this feature is to allow users to create a directed graph, where each node of the graph is a deployed job.
 
@@ -7,23 +7,25 @@ Spring XD provides a DSL for orchestrating deployed jobs.  The purpose of this f
 ### Conditional Execution
 
 A simple linear graph consists of a sequence of jobs, in  which each job in the sequence is executed only if the one previous to it was successfully run.  In the example below 
-job create testjob --definition “batch_simple || batch_basic”
+----
+job create testjob --definition "batch_simple || batch_basic"
+----
 The batch_simple job will launch and if successful then batch_basic will run.  However if batch_simple fails then batch_basic will not launch. The job sequence of running defined by using the double pipe symbol ||.
 
 ### Transitions
 
 As with any directed graph a specific node can be launched based on the some criteria.  In this case we can execute a specific job or jobs based on the exit status of another job. A job transition is represented by the pipe symbol |.  For example: 
 ----
-job create testjob --definition “aaa | foo=bbb |bar=ccc|| ddd” 
+job create testjob --definition "aaa | foo=bbb |bar=ccc|| ddd"
 ----
 In the example above aaa would launch and if it had an exit status of foo, then the bbb job would launch. If the exit status of aaa was bar then ccc would launch.  All other statuses returned by aaa would launch ddd. 
-Another transition that can be specified is the '*'.  This means that any Exit Status that is not specifically enumerated by a transition for the current job, then the job associated with the '*' will be launched.ie.
+Another transition that can be specified is the '\*'.  This means that any Exit Status that is not specifically enumerated by a transition for the current job, then the job associated with the '*' will be launched.ie.
 ----
-job create testjob --definition “aaa | foo=bbb |bar=ccc|| ddd | baz=eee | ‘*’= $END”
+job create testjob --definition "aaa | foo=bbb |bar=ccc|| ddd | baz=eee | '*'= $END"
 ----
 in the example above ,if an exit status of ddd is baz then the eee job will launch all exit status’s would end the job execution.
 
-#### keywords
+#### Keywords
 
 Orchestrated jobs offers 2 target keywords for transitions where the target of the transition is not another job.  
 $END - will either terminate the job orchestration or if used in a split, will terminate the flow within the specific split.  
@@ -33,11 +35,11 @@ $FAIL - will set the status for the orchestrated job to fail and terminate the j
 
 Splits allow a for multiple jobs within a orchestrated job to be run in parallel.  It is denoted by  using angle brackets to group jobs and flows that are to be run in parallel.  These jobs are and flows are separated by the ampersand ‘&’ character.  For example: 
 ----
-job create testjob --definition “<aaa & bbb & ccc>” 
+job create testjob --definition "<aaa & bbb & ccc>"
 ----
 The example above will execute jobs aaa, bbb and ccc in parallel.   With the Job Orchestration DSL a user may also execute multiple split groups in succession.  For example:
 ----
-job create testjob --definition “<aaa & bbb & ccc> || <ddd & eee & fff>”
+job create testjob --definition "<aaa & bbb & ccc> || <ddd & eee & fff>"
 ----
 In the example above jobs aaa, bbb and ccc will be run in parallel, once they all complete then jobs ddd, eee and fff will be run in parallel.  Once they complete the orchestrated job will end.
 
@@ -45,7 +47,7 @@ In the example above jobs aaa, bbb and ccc will be run in parallel, once they al
 
 Supports the ability to execute conditional jobs within a split, for example:
 ----
-job create testjob --definition “<(aaa ||bbb ||ccc) & ddd & eee> || fff” 
+job create testjob --definition "<(aaa ||bbb ||ccc) & ddd & eee> || fff" 
 ----
 In this example the jobs aaa, bbb, and ccc will be launched in succession at the same time that  jobs ddd and eee are launched in parallel.  Once all of the jobs are complete within the angle brackets job fff will be launched.  
 
@@ -53,6 +55,6 @@ In this example the jobs aaa, bbb, and ccc will be launched in succession at the
 
 Orchestrated jobs currently supports the timeout parameter which establishes the amount of time a job can execute within the job orchestration before the XD throws an UnexpectedJobExecutionException.  The default is -1 which  means no timeout.  An example using the timeout is as follows:
 ----
-job create testjob --definition “aaa || bbb --timeout=5000”  
+job create testjob --definition "aaa || bbb --timeout=5000"  
 ----
 The timeout parameter affects all the jobs within the job orchestration.
