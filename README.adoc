@@ -19,11 +19,11 @@ As with any directed graph a specific node can be launched based on the some cri
 job create testjob --definition "aaa | foo=bbb |bar=ccc|| ddd"
 ----
 In the example above aaa would launch and if it had an exit status of foo, then the bbb job would launch. If the exit status of aaa was bar then ccc would launch.  All other statuses returned by aaa would launch ddd. 
-Another transition that can be specified is the `'\*'`.  This means that any Exit Status that is not specifically enumerated by a transition for the current job, then the job associated with the '*' will be launched.ie.
+Another transition that can be specified is the `'\*'`.  This means that any Exit Status that is not specifically enumerated by a transition for the current job, the job associated with the '*' will be launched. ie.
 ----
 job create testjob --definition "aaa | foo=bbb |bar=ccc|| ddd | baz=eee | '*'= $END"
 ----
-in the example above ,if an exit status of ddd is baz then the eee job will launch all exit status’s would end the job execution.
+in the example above, if an exit status of ddd is baz then the eee job will launch all other exit status’s would end the job execution.
 
 #### Keywords
 
