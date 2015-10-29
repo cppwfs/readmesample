@@ -4,7 +4,7 @@ Spring XD provides a DSL for orchestrating deployed jobs.  The purpose of this f
 
 ## DSL Components
 
-The DSL for the orchestrated job is expressed when a user creates a job definition within Spring XD.  The jobs referenced by the DSL must be defined and deployed prior to launching the orchestrated job. for example
+The DSL for the orchestrated jobs is expressed when a user creates a job definition within Spring XD.  The jobs referenced by the DSL must be defined and deployed prior to launching the orchestrated job. For example:
 ----
 xd:> job create batch_simple_def --definition "batch_simple_module" --deploy
 xd:> job create batch_basic_def --definition "batch_basic_module" --deploy
