@@ -6,7 +6,7 @@ Spring XD provides a DSL for orchestrating deployed jobs.  The purpose of this f
 
 ### Conditional Execution
 
-Conditional execution is expressed using a double pipe symbol `||`  This allows  each job in the sequence to be launched only if the previous job successfully completed.  In the example below:
+Conditional execution is expressed using a double pipe symbol `||`.  This allows  each job in the sequence to be launched only if the previous job successfully completed.  In the example below:
 ----
 job create testjob --definition "batch_simple || batch_basic"
 ----
@@ -19,7 +19,7 @@ As with any directed graph a specific node can be launched based on the some cri
 job create testjob --definition "aaa | foo=bbb |bar=ccc|| ddd"
 ----
 In the example above aaa would launch and if it had an exit status of foo, then the bbb job would launch. If the exit status of aaa was bar then ccc would launch.  All other statuses returned by aaa would launch ddd. 
-Another transition that can be specified is the '\*'.  This means that any Exit Status that is not specifically enumerated by a transition for the current job, then the job associated with the '*' will be launched.ie.
+Another transition that can be specified is the `'\*'`.  This means that any Exit Status that is not specifically enumerated by a transition for the current job, then the job associated with the '*' will be launched.ie.
 ----
 job create testjob --definition "aaa | foo=bbb |bar=ccc|| ddd | baz=eee | '*'= $END"
 ----
