@@ -1,1 +1,11 @@
-= spring-cloud-task-modules [![Stories in Ready](https://badge.waffle.io/spring-cloud/spring-cloud-task-modules.svg?label=ready&title=Ready)](http://waffle.io/spring-cloud/spring-cloud-task-modules) [![Stories in Progress](https://badge.waffle.io/spring-cloud/spring-cloud-task-modules.svg?label=In%20Progress&title=In%20Progress)](http://waffle.io/spring-cloud/spring-cloud-task-modules-modules)
+== Spring Cloud Task Modules image:https://build.spring.io/plugins/servlet/buildStatusImage/SCS-SM[Build Status, link=https://build.spring.io/browse/SCS-SM] image:https://badge.waffle.io/spring-cloud/spring-cloud-task-modules.svg?label=ready&title=Ready[Stories Ready, link=http://waffle.io/spring-cloud/spring-cloud-task-modules] image:https://badge.waffle.io/spring-cloud/spring-cloud-task-modules.svg?label=In%20Progress&title=In%20Progress[Stores In Progress, link=http://waffle.io/spring-cloud/spring-cloud-task-modules]
+
+This project provides a collection of task for common cases.  They can be run on their own or orchestrated via Spring Cloud Data Flow.
+
+=== Building
+
+Clone the repo and type
+
+----
+$ ./mvnw clean package
+----
