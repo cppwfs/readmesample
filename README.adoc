@@ -1,13 +1,22 @@
-== Spring Cloud Task App Starters image:https://build.spring.io/plugins/servlet/buildStatusImage/SCT-SM[Build Status, link=https://build.spring.io/browse/SCT-SM] image:https://badge.waffle.io/spring-cloud/spring-cloud-task-app-starters.svg?label=ready&title=Ready[Stories Ready, link=http://waffle.io/spring-cloud/spring-cloud-task-app-starters] image:https://badge.waffle.io/spring-cloud/spring-cloud-task-app-starters.svg?label=In%20Progress&title=In%20Progress[Stores In Progress, link=http://waffle.io/spring-cloud/spring-cloud-task-app-starters]
+= Spring Cloud Data Flow Server for Cloud Foundry image:https://build.spring.io/plugins/servlet/buildStatusImage/SCD-CFBMASTER[Build Status, link=https://build.spring.io/browse/SCD-CFBMASTER] image:https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-server-cloudfoundry.svg?label=ready&title=Ready[Stories in Ready, link=http://waffle.io/spring-cloud/spring-cloud-dataflow-server-cloudfoundry] image:https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-server-cloudfoundry.svg?label=In%20Progress&title=In%20Progress[Stories in Progress, link=http://waffle.io/spring-cloud/spring-cloud-dataflow-server-cloudfoundry]
 
-This project provides a collection of task for common cases.  They can be run on their own or orchestrated via Spring Cloud Data Flow.
+This project provides support for deploying https://github.com/spring-cloud/spring-cloud-dataflow[Spring Cloud Dataflow] Stream definitions to Cloud Foundry.  It includes an implementation of the https://github.com/spring-cloud/spring-cloud-dataflow/tree/master/spring-cloud-dataflow-deployer-spi[Spring Cloud Dataflow Deployer SPI] for Cloud Foundry.
+
+Please refer to the http://docs.spring.io/spring-cloud-dataflow-server-cloudfoundry/docs/current-SNAPSHOT/reference/htmlsingle/#getting-started[reference documentation] on how to get started.
+
+
+=== Contributing
+
+We love contributions.  Follow this https://github.com/spring-cloud/spring-cloud-dataflow/blob/master/spring-cloud-dataflow-docs/src/main/asciidoc/appendix-contributing.adoc[link] for more information on how to contribute.
 
 === Building
 
-Clone the repo and type
+Clone the repo and type 
 
 ----
-$ ./mvnw clean package
+$ ./mvnw clean install 
 ----
+
+For more information on building, see this https://github.com/spring-cloud/spring-cloud-dataflow/blob/master/spring-cloud-dataflow-docs/src/main/asciidoc/appendix-building.adoc[link].
 
 
