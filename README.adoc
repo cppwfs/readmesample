@@ -1,22 +1,40 @@
-= Spring Cloud Data Flow Server for Cloud Foundry image:https://build.spring.io/plugins/servlet/buildStatusImage/SCD-CFBMASTER[Build Status, link=https://build.spring.io/browse/SCD-CFBMASTER] image:https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-server-cloudfoundry.svg?label=ready&title=Ready[Stories in Ready, link=http://waffle.io/spring-cloud/spring-cloud-dataflow-server-cloudfoundry] image:https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-server-cloudfoundry.svg?label=In%20Progress&title=In%20Progress[Stories in Progress, link=http://waffle.io/spring-cloud/spring-cloud-dataflow-server-cloudfoundry]
+== Spring Cloud Task App Starters image:https://build.spring.io/plugins/servlet/buildStatusImage/SCT-SCTAS[Build Status, link=https://build.spring.io/browse/SCT-SCTAS] image:https://badge.waffle.io/spring-cloud/spring-cloud-task-app-starters.svg?label=ready&title=Ready[Stories Ready, link=http://waffle.io/spring-cloud/spring-cloud-task-app-starters] image:https://badge.waffle.io/spring-cloud/spring-cloud-task-app-starters.svg?label=In%20Progress&title=In%20Progress[Stores In Progress, link=http://waffle.io/spring-cloud/spring-cloud-task-app-starters]
 
-This project provides support for deploying https://github.com/spring-cloud/spring-cloud-dataflow[Spring Cloud Dataflow] Stream definitions to Cloud Foundry.  It includes an implementation of the https://github.com/spring-cloud/spring-cloud-deployer[Spring Cloud Dataflow Deployer SPI] for Cloud Foundry.
-
-Please refer to the http://docs.spring.io/spring-cloud-dataflow-server-cloudfoundry/docs/current-SNAPSHOT/reference/htmlsingle/#getting-started[reference documentation] on how to get started.
-
-
-=== Contributing
-
-We love contributions.  Follow this https://github.com/spring-cloud/spring-cloud-dataflow/blob/master/spring-cloud-dataflow-docs/src/main/asciidoc/appendix-contributing.adoc[link] for more information on how to contribute.
+This project provides a collection of starters for Spring Cloud Tasks for common cases.  They can be run on their own or orchestrated via Spring Cloud Data Flow.
 
 === Building
 
-Clone the repo and type 
+Clone the repo and type
 
 ----
-$ ./mvnw clean install 
+$ ./mvnw clean install
 ----
 
-For more information on building, see this https://github.com/spring-cloud/spring-cloud-dataflow/blob/master/spring-cloud-dataflow-docs/src/main/asciidoc/appendix-building.adoc[link].
+*Quick Introduction*
+
+Spring Cloud Task App Starters contains starter projects for various tasks used in
+https://github.com/spring-cloud/spring-cloud-task[Spring Cloud Task].
+
+There is a convenient script provided to generate Spring Boot Applications for all the starters. These out of the box
+generated applications are very basic in functionality and thus you may want to create similar apps
+using the starters as a basis.
+
+*Generating Out of the Box Tasks*
+
+----
+$ ./generateApps.sh
+
+$ cd apps
+
+$ mvn clean install
+
+Here you will find the auto generated apps.
+----
+
+NOTE: After running the ./generateApps.sh if the apps directory does not contain the pom.xml file. Remove the apps
+directory and rerun the `./generateApps.sh` script.
+
+For more information please refer to this
+https://github.com/spring-cloud/spring-cloud-task-app-starters/blob/master/spring-cloud-task-app-starters-docs/src/main/asciidoc/overview.adoc[overview].
 
 
