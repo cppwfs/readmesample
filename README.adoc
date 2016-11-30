@@ -130,7 +130,7 @@ working.
 * `HTTP-SOURCE` - HttpSourceTests tests the http source in a stream.
 * `TAP` - TapTests  includes tests for topics as well as stream taps.
 * `TRANSFORM` - TransformTests  includes tests for the `transform` processor.
-* `TIMESTAMP`TimestampTaskTests includes test for the `timestamp` task.
+* `TIMESTAMP` TimestampTaskTests includes test for the `timestamp` task.
 
 == What's Next -> Stories:
 
