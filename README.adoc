@@ -1,14 +1,15 @@
-== spring-cloud-dataflow-acceptance-tests Spike Project
+== Spring Cloud Data Flow Acceptance Tests
 
 This project starts a basic Spring Cloud Data Flow environment and then launches
-acceptance tests against the Spring Cloud Data Flow Server Local. The acceptance
-tests evaluate how the local server handles a stream's
-full lifecycle as well as various Spring Cloud Stream App Starters.
+acceptance tests against the Spring Cloud Data Flow Server. The acceptance
+tests evaluate how the server handles a stream's or task's
+full lifecycle.  The acceptance test also can be used to evaluate various 
+Spring Cloud Stream and Spring Cloud Task App Starters.
 
 == How To Run it
 
-=== How to run out the box
-To execute a test that will pull down the latest 1.1.0-BUILD-SNAPSHOT, start
+=== Running acceptance tests on the Spring Cloud Data Flow Server Local
+To execute a test that will pull down the latest 1.1.1-BUILD-SNAPSHOT, start
 a Rabbit instance and a Spring Cloud Data Flow Server Local instance execute
 the following: `./startAcceptanceTests.sh -ke`.  The -ke kills the Rabbit Docker
 container as well as the Spring Cloud Data Flow Server after the test completes.
