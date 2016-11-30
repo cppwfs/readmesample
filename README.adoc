@@ -125,26 +125,19 @@ methods for testing tasks.
 
 The current tests that have been written are the:
 
-* TickTockTests creates a TickTock stream and evaluates that it is deployed and
+* `TICKTOCK` - TickTockTests creates a TickTock stream and evaluates that it is deployed and
 working.
-* HttpSourceTests tests the http source in a stream.
-* TapTests  includes tests for topics as well as stream taps.
-* TransformTests  includes tests for the `transform` processor.
-* TimestampTaskTests includes test for the `timestamp` task.
+* `HTTP-SOURCE` - HttpSourceTests tests the http source in a stream.
+* `TAP` - TapTests  includes tests for topics as well as stream taps.
+* `TRANSFORM` - TransformTests  includes tests for the `transform` processor.
+* `TIMESTAMP`TimestampTaskTests includes test for the `timestamp` task.
 
 == What's Next -> Stories:
 
-* While hooks have been added to support Kafka.  These need to be flushed out
-including adding a start-peripherals-KAFKA.sh script for starting a Kafka
-Docker Container.
-* Need to abstract out the local centric portions startAcceptanceTests and
-have them as a platform that is supported like CF, K8's etc.
+* Need to create start`<platform>`Acceptance.sh scripts for CF, Kubernetes, Yarn, Mesos.
 * Add support for pulling in files that are written by sinks and conversely put
 files for sources.
 * Support for MySQL local deployment for JDBC and Task based Acceptance tests
-* Add Support for running CF acceptance tests on PCF/PCF-Dev
-* Use Multi-Job for Jenkins for the tests.  And each acceptance test gets its own
-run. i.e. CORE-Tests, HADOOP-Tests, GEMFIRE-Tests... etc
 * Need to support ability to make CF based calls so that ports can be opened up
 for http source based tests.
-* Need to test the tests for CF.  Only tested ticktock.
+* Need to test the tests for CF.  Only tested ticktock and HttpSource.
