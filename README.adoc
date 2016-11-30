@@ -86,7 +86,7 @@ functionality of Spring Cloud Data Flow.
 
 === Running Cloud Foundry Acceptance Tests
 By default all all acceptance tests will run against a local platform.  However,
-if you wish to execute the acceptance tests against a Cloud Foundry, add the
+if you wish to execute the acceptance tests against a Cloud Foundry instance, add the
 following environment variables to your maven execution:
 
 * `PLATFORM_TYPE` specifies that we want to execute this test against a specify
