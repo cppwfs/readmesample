@@ -1,4 +1,4 @@
-== Spring Cloud Data Flow Acceptance Tests
+= Spring Cloud Data Flow Acceptance Tests
 
 This project starts a basic Spring Cloud Data Flow environment and then launches
 acceptance tests against the Spring Cloud Data Flow Server. The acceptance
@@ -84,6 +84,23 @@ GLOBAL:
 NOTE: CORE target runs TICKTOCK and TIMESTAMP tests, which represents "core"
 functionality of Spring Cloud Data Flow.
 
+=== Running Cloud Foundry Acceptance Tests
+By default all all acceptance tests will run against a local platform.  However,
+if you wish to execute the acceptance tests against a Cloud Foundry, add the
+following environment variables to your maven execution:
+
+* `PLATFORM_TYPE` specifies that we want to execute this test against a specify
+type of platform instance.  Default is `LOCAL`.
+* `PLATFORM_SUFFIX` specifies the suffix to be appended to each application's
+name to create a URI. default is `local.pcfdev.io`
+* `DEPLOY_PAUSE_RETRIES` Need to make sure that this is set to at least 100
+because the default of 25 is too few attempts when deploying a stream to
+Cloud Foundry.
+
+For example if you wish to run a test on a currently running Data Flow Server on
+PCFDev the mvn command would look something like this:
+`mvn clean test -DPLATFORM_TYPE=CLOUD_FOUNDRY -DDEPLOY_PAUSE_RETRIES=100 -DWHAT_TO_TEST=TICKTOCK -DSERVER_URI=http://dataflow-server.local.pcfdev.io`
+
 == Project Structure
 
 The project is comprised of 3 primary components:
@@ -114,23 +131,6 @@ working.
 * TapTests  includes tests for topics as well as stream taps.
 * TransformTests  includes tests for the `transform` processor.
 * TimestampTaskTests includes test for the `timestamp` task.
-
-== Cloud Foundry Acceptance Tests
-By default all all acceptance tests will run against a local platform.  However,
-if you wish to execute the acceptance tests against a Cloud Foundry, add the
-following environment variables to your maven execution:
-
-* `PLATFORM_TYPE` specifies that we want to execute this test against a specify
-type of platform instance.  Default is `LOCAL`.
-* `PLATFORM_SUFFIX` specifies the suffix to be appended to each application's
-name to create a URI. default is `local.pcfdev.io`
-* `DEPLOY_PAUSE_RETRIES` Need to make sure that this is set to at least 100
-because the default of 25 is too few attempts when deploying a stream to
-Cloud Foundry.
-
-For example if you wish to run a test on a currently running Data Flow Server on
-PCFDev the mvn command would look something like this:
-`mvn clean test -DPLATFORM_TYPE=CLOUD_FOUNDRY -DDEPLOY_PAUSE_RETRIES=100 -DWHAT_TO_TEST=TICKTOCK -DSERVER_URI=http://dataflow-server.local.pcfdev.io`
 
 == What's Next -> Stories:
 
