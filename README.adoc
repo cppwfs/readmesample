@@ -20,7 +20,7 @@ NOTE: You will need docker-compose installed to run acceptance tests on your loc
 
 Execute the following: `./startLocalAcceptance.sh`
 
-This will execute the CORE acceptance tests which include the TICKTOCK and
+This will execute the CORE acceptance tests which includes the TICKTOCK and
 TIMESTAMP tests.
 
 Once you are finished using the Rabbit and SCDF instances you may shut them down
