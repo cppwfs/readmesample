@@ -57,13 +57,13 @@ Also when the test is complete the application will call a
 `local-scripts/stop-peripherals-<WHAT_TO_TEST>.sh where you can place the scripts to terminate
 the peripherals started for the test.  For example `stop-peripherals-TAP.sh`.
 
-=== Use an existing rabbit instance
+==== Use an existing rabbit instance
 In a scenario where you already have a Rabbit or Kafka instance running but want to bring
 up an instance of Spring Cloud Data Flow Server Local and execute acceptance
 tests, execute the following:
 `./startLocalAcceptance.sh -sb`.
 
-=== Get Help
+==== Get Help
 Execute `./startLocalAcceptance.sh --help` and the following will be displayed:
 
 ```
@@ -89,9 +89,14 @@ functionality of Spring Cloud Data Flow.
 The project is comprised of 3 primary components:
 
 * `src/` contains the acceptance tests
-* `startLocalAcceptance.sh` creates the test environment and executes the
+* `startLocalAcceptance.sh` creates a local Spring Cloud Data Flow Server test environment and executes the
 acceptance tests
-* `start-peripherals-RABBIT` starts a rabbit docker container that will be used
+* `local-scripts/` contains scripts that start or stops peripheral apps for the local Spring Cloud DataFlow server test
+** `local-scripts/start-peripherals-RABBIT` starts a rabbit docker container that will be used
+ as the binder for a acceptance tests run.
+ ** `local-scripts/start-peripherals-KAFKA` starts a kafka docker container that will be used
+ as the binder for a acceptance tests run.
+  ** `local-scripts/stop-peripherals-KAFKA` stops a kafka docker container that was used
  as the binder for a acceptance tests run.
 
 == Acceptance Tests
@@ -110,7 +115,7 @@ working.
 * TransformTests  includes tests for the `transform` processor.
 * TimestampTaskTests includes test for the `timestamp` task.
 
-=== Cloud Foundry Acceptance Tests
+== Cloud Foundry Acceptance Tests
 By default all all acceptance tests will run against a local platform.  However,
 if you wish to execute the acceptance tests against a Cloud Foundry, add the
 following environment variables to your maven execution:
