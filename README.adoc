@@ -1,143 +1,157 @@
-= Spring Cloud Data Flow Acceptance Tests
+[[tasks-on-cloudfoundry]]
+= Tasks on Cloud Foundry
 
-This project starts a basic Spring Cloud Data Flow environment and then launches
-acceptance tests against the Spring Cloud Data Flow Server. The acceptance
-tests evaluate how the server handles a stream's or task's
-full lifecycle.  The acceptance test also can be used to evaluate various 
-Spring Cloud Stream and Spring Cloud Task App Starters.
+Spring Cloud Data Flow's task functionality exposes new experimental capabilities within
+the Pivotal Cloud Foundry runtime. It's important to note that the current underlying PCF
+capabilities are considered experimental, and therefore this functionality within Spring
+Cloud Data Flow is also considered experimental.
 
-== How To Run it
+== Version Compatibility
 
-=== Running acceptance tests on the Spring Cloud Data Flow Server Local
-To execute a test that will pull down the latest 1.1.1-BUILD-SNAPSHOT, start
-a Rabbit instance and a Spring Cloud Data Flow Server Local instance execute
-the following: `./startLocalAcceptance.sh -ke`.  The -ke kills the Rabbit Docker
-container as well as the Spring Cloud Data Flow Server after the test completes.
+The task functionality depends on the latest versions of PCF for runtime support. This
+release requires PCF version 1.7.12 or higher to run tasks.
 
-NOTE: You will need docker-compose installed to run acceptance tests on your local machine
+== Tooling
 
-==== How to execute an acceptance test and leave the SCDF and Rabbit instances up
+Because the task functionality is currently considered experimental within PCF, the tooling
+around it within the CF ecosystem is not complete.  In order to interact with tasks via the
+PCF command line interface (CLI), you need to install a plugin:
+link:https://github.com/cloudfoundry/v3-cli-plugin[v3-cli-plugin]. It's important to note
+that this plugin is only compatible with the PCF CLI version 6.17.0+5d0be0a-2016-04-15.
+You can read more about the functionality the plugin provides in its README.
 
-Execute the following: `./startLocalAcceptance.sh`
+It's also important to note that there is no Apps Manager support for tasks as of this
+release. When running applications as tasks through Spring Cloud Data Flow, the only way
+to view them within the context of CF is via the plugin mentioned above.
 
-This will execute the CORE acceptance tests which includes the TICKTOCK and
-TIMESTAMP tests.
+== Running Task Applications
 
-Once you are finished using the Rabbit and SCDF instances you may shut them down
-by executing the `./startLocalAcceptance.sh -n`
+Running a task application within Spring Cloud Data Flow goes through a slightly different
+lifecycle than running a stream application. Both types of applications need to be registered
+with the appropriate artifact coordinates. Both need a definition created via the SCDF DSL.
+However, that's where the similarities end.
 
-==== How to test against a running system (just run the acceptance tests themselves)
-In a scenario where you already have a Spring Cloud Data Flow Server Local and
-Rabbit instance running and want to use them, execute the following:
-`./startLocalAcceptance.sh -s -d`.  This execution will skip the download of the
-SCDF server jar and not start the rabbit nor SCDF-Server-Local instances,
-but will run core acceptance tests.
+With stream based applications, you "deploy" them with the intent that they run until they
+are undeployed. A stream definition is only deployed once (it can be scaled, but only
+deployed as one instance of the stream as a whole). However, tasks are _launched_. A single
+task definition can be launched many times. With each launch, they will start, execute,
+and shut down with PCF cleaning up the resources once the shutdown has occurred. The
+following sections outline the process of creating, launching, destroying, and viewing tasks.
 
-==== Running a specific acceptance test.
-In a scenario where you are writing a test and you just want to run that one
-acceptance test, execute the following:
+=== Create a Task
 
-```
-./startLocalAcceptance.sh -t <WHAT_TO_TEST>
-```
-For example if you wanted to run tests for the tap and destination features of
-a stream you would execute:
-```
-./startLocalAcceptance.sh -t TAP
-```
+Similar to streams, creating a task application is done via the SCDF DSL or through the
+dashboard. To create a task definition in SCDF, you've to either develop a task
+application or use one of the out-of-the-box link:http://docs.spring.io/spring-cloud-task-app-starters/docs/{sct-starters-core-version}/reference/htmlsingle[task app-starters].
+The maven coordinates of the task application should be registered in SCDF. For more
+details on how to register task applications, review <<_registering_a_task_application,register task applications>>
+section from the core docs.
 
-This will download of the SCDF server jar, start the rabbit and
-SCDF-Server-Local instances and run only the TAPTEST acceptance test.
+Let's see an example that uses the out-of-the-box `timestamp` task application.
 
-If the particular test needs to have a additional apps (for example HADOOP)
-running prior to the test being executed you may add a script to launch them.
-This is done by adding a script to the main project that is in the form of
-`local-scripts/start-peripherals-<WHAT_TO_TEST>.sh`.  For example `start-peripherals-TAP.sh`.
-Also when the test is complete the application will call a
-`local-scripts/stop-peripherals-<WHAT_TO_TEST>.sh where you can place the scripts to terminate
-the peripherals started for the test.  For example `stop-peripherals-TAP.sh`.
+[source]
+----
+dataflow:>task create --name foo --definition "timestamp"
+Created new task 'foo'
+----
 
-==== Use an existing rabbit instance
-In a scenario where you already have a Rabbit or Kafka instance running but want to bring
-up an instance of Spring Cloud Data Flow Server Local and execute acceptance
-tests, execute the following:
-`./startLocalAcceptance.sh -sb`.
+NOTE: Tasks in SCDF do not require explicit deployment. They are required to be launched
+and with that there are different ways to launch them - refer to <<spring-cloud-dataflow-launch-tasks-from-stream,this section>>
+for more details.
 
-==== Get Help
-Execute `./startLocalAcceptance.sh --help` and the following will be displayed:
+=== Launch a Task
 
-```
-GLOBAL:
--a  |--applogdir - define the location where stream & task logs will be written
--b  |--binder - define the binder to use for the test (i.e. RABBIT, KAFKA)
--j  |--jarurl - which jar to use? Defaults to 1.1.0.BUILD-SNAPSHOT
--h  |--healthhost - what is your host you are running SCDF? where is docker? defaults to localhost
--l  |--numberoflines - how many lines of logs of your app do you want to print? Defaults to 1000
--ke |--killattheend - should kill all the running apps at the end of execution? Defaults to "no"
--n  |--killnow - should not run all the logic but only kill the running apps? Defaults to "no"
--s  |--skipdownloading - should skip downloading the Data Flow Jar. Defaults to "no"
--sb |--skipbinder - should skip starting rabbit docker instance. Defaults to "no"
--d  |--skipdeployment - should skip deployment of apps? Defaults to "no"
--t  |--whattotest - define what you want to test (i.e. CORE, TAP, TICKTOCK, TIMESTAMP, TRANSFORM, HTTP_SOURCE)
-```
+Unlike streams, tasks in SCDF requires an explicit launch trigger or it can be manually kicked-off.
 
-NOTE: CORE target runs TICKTOCK and TIMESTAMP tests, which represents "core"
-functionality of Spring Cloud Data Flow.
+[source]
+----
+dataflow:>task launch foo
+Launched task 'foo'
+----
 
-=== Running Cloud Foundry Acceptance Tests
-By default all all acceptance tests will run against a local platform.  However,
-if you wish to execute the acceptance tests against a Cloud Foundry instance, add the
-following environment variables to your maven execution:
+=== View Task Logs
 
-* `PLATFORM_TYPE` specifies that we want to execute this test against a specify
-type of platform instance.  Default is `LOCAL`.
-* `PLATFORM_SUFFIX` specifies the suffix to be appended to each application's
-name to create a URI. default is `local.pcfdev.io`
-* `DEPLOY_PAUSE_RETRIES` Need to make sure that this is set to at least 100
-because the default of 25 is too few attempts when deploying a stream to
-Cloud Foundry.
+As previously mentioned, the v3-cli-plugin is the way to interact with tasks on PCF,
+including viewing the logs.  In order to view the logs as a task is executing use the
+following command where `foo` is the name of the task you are executing:
 
-For example if you wish to run a test on a currently running Data Flow Server on
-PCFDev the mvn command would look something like this:
-`mvn clean test -DPLATFORM_TYPE=CLOUD_FOUNDRY -DDEPLOY_PAUSE_RETRIES=100 -DWHAT_TO_TEST=TICKTOCK -DSERVER_URI=http://dataflow-server.local.pcfdev.io`
+[source,bash]
+----
+cf v3-logs foo
+Tailing logs for app foo...
 
-== Project Structure
+....
+....
+....
+....
 
-The project is comprised of 3 primary components:
+2016-08-19T09:44:49.11-0700 [APP/TASK/bar1/0]OUT 2016-08-19 16:44:49.111  INFO 7 --- [           main] o.s.c.t.a.t.TimestampTaskApplication     : Started TimestampTaskApplication in 2.734 seconds (JVM running for 3.288)
+2016-08-19T09:44:49.13-0700 [APP/TASK/bar1/0]OUT Exit status 0
+2016-08-19T09:44:49.19-0700 [APP/TASK/bar1/0]OUT Destroying container
+2016-08-19T09:44:50.41-0700 [APP/TASK/bar1/0]OUT Successfully destroyed container
+----
 
-* `src/` contains the acceptance tests
-* `startLocalAcceptance.sh` creates a local Spring Cloud Data Flow Server test environment and executes the
-acceptance tests
-* `local-scripts/` contains scripts that start or stops peripheral apps for the local Spring Cloud DataFlow server test
-** `local-scripts/start-peripherals-RABBIT` starts a rabbit docker container that will be used
- as the binder for a acceptance tests run.
- ** `local-scripts/start-peripherals-KAFKA` starts a kafka docker container that will be used
- as the binder for a acceptance tests run.
-  ** `local-scripts/stop-peripherals-KAFKA` stops a kafka docker container that was used
- as the binder for a acceptance tests run.
+NOTE: Logs are only viewable through the v3-cli-plugin as the app is running.  Historic
+logs are not available.
 
-== Acceptance Tests
-All stream acceptance tests inherit from the a common AbstractStreamTests class,
-that offers utility methods for testing as well as handles the creation of
-Stream objects so that upon failures a log can be dumped for each of the
-applications in the stream.  Similarly AbstractTaskTests class offers utility
-methods for testing tasks.
+=== List Tasks
 
-The current tests that have been written are the:
+Listing tasks is as simple as:
 
-* `TICKTOCK` - TickTockTests creates a TickTock stream and evaluates that it is deployed and
-working.
-* `HTTP-SOURCE` - HttpSourceTests tests the http source in a stream.
-* `TAP` - TapTests  includes tests for topics as well as stream taps.
-* `TRANSFORM` - TransformTests  includes tests for the `transform` processor.
-* `TIMESTAMP` TimestampTaskTests includes test for the `timestamp` task.
+[source]
+----
+dataflow:>task list
+╔══════════════════════╤═════════════════════════╤═══════════╗
+║      Task Name       │     Task Definition     │Task Status║
+╠══════════════════════╪═════════════════════════╪═══════════╣
+║foo                   │timestamp                │complete   ║
+╚══════════════════════╧═════════════════════════╧═══════════╝
+----
 
-== What's Next -> Stories:
+=== List Task Executions
 
-* Need to create start`<platform>`Acceptance.sh scripts for CF, Kubernetes, Yarn, Mesos.
-* Add support for pulling in files that are written by sinks and conversely put
-files for sources.
-* Support for MySQL local deployment for JDBC and Task based Acceptance tests
-* Need to support ability to make CF based calls so that ports can be opened up
-for http source based tests.
-* Need to test the tests for CF.  Only tested ticktock and HttpSource.
+If you'd like to view the execution details of the launched task, you could do the following.
+
+[source]
+----
+dataflow:>task execution list
+╔════════════════════════╤══╤═════════════════════════╤═════════════════════════╤════════╗
+║       Task Name        │ID│       Start Time        │        End Time         │  Exit  ║
+║                        │  │                         │                         │  Code  ║
+╠════════════════════════╪══╪═════════════════════════╪═════════════════════════╪════════╣
+║foo:cloud:              │1 │ Fri Aug 19 09:44:49 PDT │Fri Aug 19 09:44:49 PDT  │0       ║
+╚════════════════════════╧══╧═════════════════════════╧═════════════════════════╧════════╝
+----
+
+=== Destroy a Task
+
+Destroying the task application from SCDF removes the task definition from task repository.
+
+[source]
+----
+dataflow:>task destroy foo
+Destroyed task 'foo'
+dataflow:>task list
+╔═════════╤═══════════════╤═══════════╗
+║Task Name│Task Definition│Task Status║
+╚═════════╧═══════════════╧═══════════╝
+----
+
+=== Deleting Task From CF
+Currently the CLI does not have a method to delete the task once it has been
+pushed to the CF instance.  The only way to do this now is via rest calls.
+This is done in 4 steps:
+
+. Obtain a list of service bindings
+.. This can be done by executing the `cf curl /v3/service_bindings`
+. Remove service bindings to the task
+.. Identify the service bindings for your task
+.. From the listing obtain the GUID for the selected service binding and execute the following command:
+`curl cf curl /v3/service_bindings/[GUID] -X DELETE`. For example:
+`cf curl /v3/service_bindings/222792c8-b7a7-4a44-97f3-62a1fcb867f2 -X DELETE`
+. Obtain a list apps
+.. This can be done by executing the `cf curl /v3/apps`
+. Remove the app
+.. For the task you want to delete,  obtain the href from the `self` attribute .
+.. Then  execute `cf curl <SELF_URL> -X DELETE`.  For Example: 
+`cf curl  /v3/apps/28e0b904-9a94-4654-936f-e5dd78sfdasdff  -X DELETE`
