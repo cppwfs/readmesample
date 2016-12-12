@@ -146,12 +146,12 @@ This is done in 4 steps:
 .. This can be done by executing the `cf curl /v3/service_bindings`
 . Remove service bindings to the task
 .. Identify the service bindings for your task
-.. From the listing obtain the GUID for the selected service binding and execute the following command:
-`curl cf curl /v3/service_bindings/[GUID] -X DELETE`. For example:
+.. Obtain the GUID for the selected service binding and execute the following command:
+`cf curl /v3/service_bindings/[GUID] -X DELETE`. For example:
 `cf curl /v3/service_bindings/222792c8-b7a7-4a44-97f3-62a1fcb867f2 -X DELETE`
-. Obtain a list apps
+. Obtain a list of tasks
 .. This can be done by executing the `cf curl /v3/apps`
-. Remove the app
-.. For the task you want to delete,  obtain the href from the `self` attribute .
-.. Then  execute `cf curl <SELF_URL> -X DELETE`.  For Example: 
+. Remove the tasks
+.. For the task you want to delete,  obtain the href from the `self` attribute of the task.
+.. Then  execute `cf curl <SELF_URL> -X DELETE`.  For Example:
 `cf curl  /v3/apps/28e0b904-9a94-4654-936f-e5dd78sfdasdff  -X DELETE`
