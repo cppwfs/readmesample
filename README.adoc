@@ -1,6 +1,6 @@
 = Composed Task Spike
 
-The purpose of this spike is to show how the Composed tasks will be implemented in
+The purpose of this spike is to show how the Composed Tasks will be implemented in
 the Data Flow project. 
 
 == Design Document
@@ -9,10 +9,10 @@ https://docs.google.com/document/d/10FiyNrKH1KmfDj7WRVmREc9VwzSZx3XnMBP8VU8y99U/
 
 === What is included 
 
-Based on the design document this story created a spring-cloud-dataflow-composed task sub-project
+Based on the design document this story created a spring-cloud-dataflow-composed-task sub-project
 under the Spring Cloud Data Flow Project.  In this project you will see that the TaskLaunchTasklet, ComposedTaskRunner
 along with the supporting ComposedTaskConfiguration and ComposedTaskStepExecutionListener are included.   
-Also you will note that the DataFlowServerConfiguration has been updated to include a EventListener to register the ComposedTaskRunner as a task in the repository (as specified in the design document).  Thus upon startup you will see that a `composed-task-runner` task appears upon executing a task list.  This can be disabled by setting the spring.cloud.dataflow.composed.task.enabled property to false.  
+Also you will note that the DataFlowServerConfiguration has been updated to include a EventListener to register the ComposedTaskRunner as a task in the repository (as specified in the design document) at Data Flow Server startup.  Thus you will see that a `composed-task-runner` task appears upon executing a `app list`.  This registration can be disabled by setting the spring.cloud.dataflow.composed.task.enabled property to false.  
 
 === What is not included
 
@@ -24,3 +24,4 @@ In this spike the following has not be included:
 ==== Kicking the tires
 
 `task create mytask --definition "composed-task-runner --composedTaskDSL='AAA'"`  Where *AAA* is your task definition.
+`task launch mytask`
