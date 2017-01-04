@@ -1,12 +1,12 @@
-[[tasks-on-cloudfoundry]]
-= Tasks on Cloud Foundry
+= Composed Task Spike
 
-Spring Cloud Data Flow's task functionality exposes new experimental capabilities within
-the Pivotal Cloud Foundry runtime. It's important to note that the current underlying PCF
-capabilities are considered experimental, and therefore this functionality within Spring
-Cloud Data Flow is also considered experimental.
+The purpose of this spike is to show how the Composed tasks will be implemented in
+the Data Flow project. 
 
-== Version Compatibility
+== General Architecture
+The design document for Composed Tasks can be found https://docs.google.com/document/d/10FiyNrKH1KmfDj7WRVmREc9VwzSZx3XnMBP8VU8y99U/edit#heading=h.4h9zsajkx156 [here]
+
+== Where does it reside
 
 The task functionality depends on the latest versions of PCF for runtime support. This
 release requires PCF version 1.7.12 or higher to run tasks.
