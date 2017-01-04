@@ -3,15 +3,19 @@
 The purpose of this spike is to show how the Composed tasks will be implemented in
 the Data Flow project. 
 
-== General Architecture
-The design document for Composed Tasks can be found https://docs.google.com/document/d/10FiyNrKH1KmfDj7WRVmREc9VwzSZx3XnMBP8VU8y99U/edit#heading=h.4h9zsajkx156 [here]
+== Design Document
+If you hadn't had a chance please review the design document.  It can be found:
+https://docs.google.com/document/d/10FiyNrKH1KmfDj7WRVmREc9VwzSZx3XnMBP8VU8y99U/edit#heading=h.4h9zsajkx156[here]
 
-== Where does it reside
+=== What is included 
 
-The task functionality depends on the latest versions of PCF for runtime support. This
-release requires PCF version 1.7.12 or higher to run tasks.
+Based on the design document this story created a spring-cloud-dataflow-composed task sub-project
+under the Spring Cloud Data Flow Project.  In this project you will see that the TaskLaunchTasklet, ComposedTaskRunner
+along with the supporting ComposedTaskConfiguration and ComposedTaskStepExecutionListener are included.   
+Also you will note that the DataFlowServerConfiguration has been updated to include a EventListener to register the ComposedTaskRunner as a task in the repository (as specified in the design document).  Thus upon startup you will see that a `composed-task-runner` task appears upon executing a task list.  This can be disabled by setting the spring.cloud.dataflow.composed.task.enabled property to false.  
 
-== Tooling
+==== Kicking the tires
+
 
 Because the task functionality is currently considered experimental within PCF, the tooling
 around it within the CF ecosystem is not complete.  In order to interact with tasks via the
