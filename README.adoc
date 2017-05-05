@@ -51,7 +51,7 @@ Feature task_creation Enabled.
 NOTE: For this sample, all you need is the `mysql` service and in PCFDev, the `mysql` service comes with a different plan. From CF CLI, create the service by: `cf create-service p-mysql 512mb mysql` and bind this service to `dataflow-server` by: `cf bind-service dataflow-server mysql`.
 +
 
-NOTE: All the apps deployed to PCFDev start with low memory by default. It is recommended to change it to at least 768MB for `dataflow-server`. Ditto for every app spawned *by* Data Flow. Change the memory by: `cf set-env dataflow-server SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_MEMORY 512`. Likewise, we would have to skip SSL validation by: `cf set-env dataflow-server SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_SKIP_SSL_VALIDATION true`.
+NOTE: All the apps deployed to PCFDev start with low memory by default. It is recommended to change it to at least 768MB for `dataflow-server`. Ditto for every app spawned *by* Spring Cloud Data Flow. Change the memory by: `cf set-env dataflow-server SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_MEMORY 512`. Likewise, we would have to skip SSL validation by: `cf set-env dataflow-server SPRING_CLOUD_DEPLOYER_CLOUDFOUNDRY_SKIP_SSL_VALIDATION true`.
 
 . Once you complete the instructions, you'll be able to list the newly deployed `dataflow-server`
 
@@ -69,7 +69,7 @@ dataflow-server  started           1/1         512M     512M   dataflow-server.l
 
 NOTE: The `ORG`, `SPACE` and `USER` could vary depending on your Cloud Foundry environment in use.
 
-. Tasks in Spring Cloud Data Flow require an RDBMS to host "task repository" (see http://docs.spring.io/spring-cloud-dataflow/docs/current-SNAPSHOT/reference/htmlsingle/#spring-cloud-dataflow-task-repository[here] for more details), so let's instruct the Data Flow server to bind the `mysql` service to each deployed task:
+. Tasks in Spring Cloud Data Flow require an RDBMS to host "task repository" (see http://docs.spring.io/spring-cloud-dataflow/docs/current-SNAPSHOT/reference/htmlsingle/#spring-cloud-dataflow-task-repository[here] for more details), so let's instruct the Spring Cloud Data Flow server to bind the `mysql` service to each deployed task:
 
 +
 
@@ -81,7 +81,7 @@ $ cf restage dataflow-server
 
 NOTE: We only need `mysql` service for this sample.
 
-. As a recap, here is what you should see as configuration for the Data Flow server:
+. As a recap, here is what you should see as configuration for the Spring Cloud Data Flow server:
 +
 ```
 cf env dataflow-server
